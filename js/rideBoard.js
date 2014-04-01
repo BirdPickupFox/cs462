@@ -69,6 +69,7 @@ function showTrips()
 {
 	selectNavigation("tripNav");
 	$("#dynamicContent").html($("#tripPage").html());
+	initTripCalendar();
 }
 
 /*
@@ -99,6 +100,92 @@ function selectNavigation(id)
 {
 	$(".navLink").removeClass('selected');
 	$("#" + id).addClass('selected');
+}
+
+// Globals for calendar
+var viewNames = ["agendaDay", "agendaWeek", "month"];
+var currentView = "agendaWeek";
+
+/*
+ * Initializes trip calendar
+ */
+function initTripCalendar()
+{
+	$("#tripCalendar").fullCalendar({
+		defaultView: currentView,
+		weekends: true,
+		selectable: true,
+		unselectAuto: true,
+		selectHelper: true,
+		events: function(start, end, callback)
+		{
+			// TODO load trips
+		},
+		eventClick: function()
+		{
+			// TODO open trip editor
+		},
+		select: function(startDate, endDate)
+		{
+			// TODO create trip
+		},
+		viewDisplay: function(view)
+		{
+			// TODO react to change in view (probably not needed)
+		},
+		eventDrop: function(evt, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view)
+		{
+			// TODO update trip
+		},
+		eventResize: function(evt, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view)
+		{
+			// TODO update trip
+		},
+		header: {
+			left: '',
+			center: 'prev title next ',
+			right: '',
+		},
+		editable: true,
+		theme: true,
+		minTime: 0,
+		maxTime: 24,
+		allDaySlot: false,
+		aspectRatio: 1.55,
+		columnFormat: {
+			month: 'dddd',
+			week: 'dddd M/d',
+			day: 'dddd M/d',
+		},
+	});
+}
+
+/*
+ * Changes the calendar view
+ *
+ * @param viewName - must be element of global viewNames
+ */
+function changeCalendarView(viewName)
+{
+	currentView = viewName;
+
+	for(var i = 0; i < viewNames.length; i++)
+	{
+		$("#" + viewNames[i] + "Img").attr("src", "images/" + viewNames[i] + ".png");
+	}
+	$("#" + currentView + "Img").attr("src", "images/" + currentView + "_highlight.png");
+
+	$("#tripCalendar").fullCalendar('changeView', viewName);
+	$("#tripCalendar").fullCalendar('render');
+	$("#tripCalendar").fullCalendar('refetchEvents');
+}
+
+/*
+ * Bring calendar back to today
+ */
+function gotoToday()
+{
+	$("#tripCalendar").fullCalendar("gotoDate", new Date());
 }
 
 /*
