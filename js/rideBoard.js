@@ -3,7 +3,43 @@
  */
 function signIn()
 {
-	alert("TODO");
+	$("#registrationEditor").dialog({
+                draggable:true,
+                title: "Sign In",
+                height: 225,
+                width: 315,
+                modal: true,
+                resizable: false,
+                open: function() {
+                },
+                close: function() {
+                },
+                buttons:
+                [
+                        {
+                                text: "Log In",
+                                id: "signInBtn",
+                                click: function(){
+                                       checkCredentials();
+                                },
+                        },
+                ],
+        });
+}
+
+function checkCredentials()
+{
+	var email = $("#regEmail").val();
+	var password = $("#regPwd").val();
+
+	$("#pageForm").append("<input type=hidden name='formEmail' id='formEmail'>");
+	$("#pageForm").append("<input type=hidden name='formPassword' id='formPassword'>");
+
+	$("#formAction").val("@SIGN_IN");
+	$("#formEmail").val(email);
+	$("#formPassword").val(password);
+
+	$("#pageForm").submit();
 }
 
 /*

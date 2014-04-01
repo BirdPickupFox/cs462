@@ -3,6 +3,8 @@
 // Include necessary object files
 require_once('objects/user.php');
 
+$db = new SQLite3('db/ride_board.db');
+
 // Get current user from cookie
 $currentUser = "";
 if(isset($_COOKIE['currentUser']))
@@ -33,6 +35,15 @@ if(isset($_REQUEST['formAction']))
 		$password = $_REQUEST['formPassword'];
 
 		// TODO sign in
+		$result = $db->querySingle('SELECT password FROM users WHERE email="' . $email . '"');
+		if($result != NULL && $result == $password)
+		{
+			echo "Granted";
+		}
+		else
+		{
+			echo "Access Denied";
+		}
 	}
 
 	else if($action == "@SIGN_OUT")
