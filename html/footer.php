@@ -3,6 +3,7 @@
 	</tr>
 </table>
 
+<!-- Trip Page -->
 <div id='tripPage' style='display:none'>
 	<table id="calendarViewSelect">
 		<tr>
@@ -37,14 +38,17 @@
 	<div id='tripCalendar'></div>
 </div>
 
+<!-- My Vehicles Page -->
 <div id='vehiclePage' style='display:none'>
 	<div>This is the vehicle page</div>
 </div>
 
+<!-- My Notifications Page -->
 <div id='notifyPage' style='display:none'>
 	<div>This is the notification page</div>
 </div>
 
+<!-- Registration Editor -->
 <div id='registrationEditor' style='display:none'>
 	<table>
 		<tr>
@@ -58,6 +62,99 @@
 	</table>
 </div>
 
+<!-- New Trip Editor -->
+<div id='newTripEditor' style='display:none'>
+	<table id='newTripTable'>
+		<tr>
+			<th>Vehicle</th>
+			<td colspan=3>
+				<select id='vehicleSelect' class='wide'>
+					<option>Choose Vehicle...</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<th>Start Location</th>
+			<td><input type=text id='startLoc'></td>
+			<th>End Location</th>
+			<td><input type=text id='endLoc'></td>
+		</tr>
+		<tr>
+			<th>Departure Date</th>
+			<td><input type=text id='startDate'></td>
+			<th>Departure Time</th>
+			<td>
+				<table>
+					<tr>
+						<td>
+							<select id='startTimeHour'>
+								<?php
+								for($i=1; $i <= 12; $i++)
+									echo "<option>$i</option>";
+								?>
+							</select>
+						</td>
+						<td>:</td>
+						<td>
+							<select id='startTimeMinute'>
+								<?php
+								for($i=0; $i <= 60; $i++)
+									echo "<option>$i</option>";
+								?>
+							</select>
+						</td>
+						<td>
+							<select id='startTimePeriod'>
+								<option>AM</option>
+								<option>PM</option>
+							</select>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<th>Arrival Date</th>
+			<td><input type=text id='endDate'></td>
+			<th>Arrival Time</th>
+			<td>
+				<table>
+					<tr>
+						<td>
+							<select id='endTimeHour'>
+								<?php
+								for($i=1; $i <= 12; $i++)
+									echo "<option>$i</option>";
+								?>
+							</select>
+						</td>
+						<td>:</td>
+						<td>
+							<select id='endTimeMinute'>
+								<?php
+								for($i=0; $i <= 60; $i++)
+									echo "<option>$i</option>";
+								?>
+							</select>
+						</td>
+						<td>
+							<select id='endTimePeriod'>
+								<option>AM</option>
+								<option>PM</option>
+							</select>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<th>Total Price</th>
+			<td colspan=3><input type=text id='totalPrice' class='wide'></td>
+		</tr>
+	</table>
+</div>
+
+<!-- Universal Page Form -->
 <form id='pageForm' method='POST'>
 	<input type=hidden name='formAction' id='formAction' value=''>
 </form>

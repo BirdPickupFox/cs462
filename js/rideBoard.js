@@ -28,6 +28,8 @@ function register()
 		modal: true,
 		resizable: false,
 		open: function() {
+			$("#regEmail").val("");
+			$("#regPwd").val("");
 		},
 		close: function() {
 		},
@@ -36,7 +38,7 @@ function register()
 			{
 				text: "Create Account",
 				id: "createAccountBtn",
-				click: function(){
+				click: function() {
 					createAccount();
 				},
 			},
@@ -122,13 +124,13 @@ function initTripCalendar()
 		{
 			// TODO load trips
 		},
-		eventClick: function()
+		eventClick: function(calEvent)
 		{
-			// TODO open trip editor
+			// TODO open trip editor (for existing)
 		},
 		select: function(startDate, endDate)
 		{
-			// TODO create trip
+			openNewTripEditor(startDate, endDate);
 		},
 		viewDisplay: function(view)
 		{
@@ -136,11 +138,11 @@ function initTripCalendar()
 		},
 		eventDrop: function(evt, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view)
 		{
-			// TODO update trip
+			// TODO update trip (reflect in Google Calendar)
 		},
 		eventResize: function(evt, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view)
 		{
-			// TODO update trip
+			// TODO update trip (reflect in Google Calendar)
 		},
 		header: {
 			left: '',
@@ -164,7 +166,7 @@ function initTripCalendar()
 /*
  * Changes the calendar view
  *
- * @param viewName - must be element of global viewNames
+ * @param viewName - must be element of global array viewNames
  */
 function changeCalendarView(viewName)
 {
@@ -187,6 +189,36 @@ function changeCalendarView(viewName)
 function gotoToday()
 {
 	$("#tripCalendar").fullCalendar("gotoDate", new Date());
+}
+
+/*
+ * Opens New Trip dialog to allow user to create a new trip
+ */
+function openNewTripEditor()
+{
+	$("#newTripEditor").dialog({
+		draggable:true,
+		title: "Create New Trip",
+		height: 320,
+		width: 700,
+		modal: true,
+		resizable: true,
+		open: function() {
+		},
+		close: function() {
+		},
+		buttons:
+		[
+			{
+				text: "Create Trip",
+				id: "createTripBtn",
+				click: function() {
+					// TODO create trip
+					alert("TODO");
+				},
+			},
+		],
+	});
 }
 
 /*
