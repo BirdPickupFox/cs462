@@ -1,0 +1,27 @@
+* {
+ 	font-family:sans-serif;
+}
+.right {
+	text-align:right;
+	float:right;
+}
+.wide {
+	width:100%;
+}
+html {
+	height:100%;
+}
+body {
+	margin:0px;
+	height:100%;
+}
+div#pageHeader {
+        color:white;
+        background:rgb(0,25,70);
+        padding:5px 10px;
+        border-width:0px 0px 1px 0px;
+        border-color:rgb(100, 190, 220);
+        border-style:solid;
+        position:relative;
+        font-size:8pt;
+}

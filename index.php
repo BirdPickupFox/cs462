@@ -1,4 +1,7 @@
 <?php
 
+include('html/header.php');
+
 echo "Hi";
-die;
+
+include('html/footer.php');
