@@ -2,7 +2,7 @@
 <html>
 <head>
 	<link rel='stylesheet' href='css/rideBoard.css'>
-	<link rel='stylesheet' href='css/light-theme/jquery-ui-1.10.4.custom.min.css'>
+	<link rel='stylesheet' href='css/light-theme/jquery-ui-1.10.4.custom.css'>
 	<link rel='stylesheet' href='js/fullcalendar/fullcalendar.css'>
 	<script type='text/javascript' src='js/jquery-1.10.2.js'></script>
 	<script type='text/javascript' src='js/jquery-ui-1.10.4.custom.min.js'></script>

@@ -70,6 +70,7 @@ function showTrips()
 	selectNavigation("tripNav");
 	$("#dynamicContent").html($("#tripPage").html());
 	initTripCalendar();
+	changeCalendarView("agendaWeek");
 }
 
 /*
