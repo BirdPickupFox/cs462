@@ -19,7 +19,46 @@ function signOut()
  */
 function register()
 {
-	alert("TODO");
+	$("#registrationEditor").dialog({
+		draggable:true,
+		title: "Register",
+		height: 225,
+		width: 315,
+		modal: true,
+		resizable: false,
+		open: function() {
+		},
+		close: function() {
+		},
+		buttons:
+		[
+			{
+				text: "Create Account",
+				id: "createAccountBtn",
+				click: function(){
+					createAccount();
+				},
+			},
+		],
+	});
+}
+
+/*
+ * Creates account using data from registration editor
+ */
+function createAccount()
+{
+	var email = $("#regEmail").val();
+	var password = $("#regPwd").val();
+
+	$("#pageForm").append("<input type=hidden name='formEmail' id='formEmail'>");
+	$("#pageForm").append("<input type=hidden name='formPassword' id='formPassword'>");
+
+	$("#formAction").val("@CREATE_USER");
+	$("#formEmail").val(email);
+	$("#formPassword").val(password);
+
+	$("#pageForm").submit();
 }
 
 /*

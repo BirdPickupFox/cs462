@@ -1,13 +1,3 @@
-<?php
-
-$currentUser = "";
-if(isset($_COOKIE['currentUser']))
-{
-	$currentUser = $_COOKIE['currentUser'];
-}
-$currentUser = "fox016@gmail.com";
-
-?>
 <!DOCTYPE html>
 <html>
 <head>
