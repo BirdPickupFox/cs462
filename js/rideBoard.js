@@ -11,7 +11,8 @@ function signIn()
  */
 function signOut()
 {
-	alert("TODO");
+	$("#formAction").val("@SIGN_OUT");
+	$("#pageForm").submit();
 }
 
 /*
@@ -77,6 +78,15 @@ function showMyVehicles()
 {
 	selectNavigation("vehicleNav");
 	$("#dynamicContent").html($("#vehiclePage").html());
+}
+
+/*
+ * Navigates to the My Notifications page
+ */
+function showMyNotifications()
+{
+	selectNavigation("notifyNav");
+	$("#dynamicContent").html($("#notifyPage").html());
 }
 
 /*

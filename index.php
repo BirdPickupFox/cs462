@@ -29,6 +29,9 @@ if(isset($_REQUEST['formAction']))
 
 	else if($action == "@SIGN_IN")
 	{
+		$email = $_REQUEST['formEmail'];
+		$password = $_REQUEST['formPassword'];
+
 		// TODO sign in
 	}
 

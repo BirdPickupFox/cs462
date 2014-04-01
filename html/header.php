@@ -44,6 +44,9 @@
 				<tr>
 					<td class='navLink' id='vehicleNav' onclick='showMyVehicles()'>My Vehicles</td>
 				</tr>
+				<tr>
+					<td class='navLink' id='notifyNav' onclick='showMyNotifications()'>My Notifications</td>
+				</tr>
 			</table>
 		</td>
 		<td id='viewWrapper'>

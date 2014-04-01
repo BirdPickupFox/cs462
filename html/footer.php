@@ -11,6 +11,10 @@
 	<div>This is the vehicle page</div>
 </div>
 
+<div id='notifyPage' style='display:none'>
+	<div>This is the notification page</div>
+</div>
+
 <div id='registrationEditor' style='display:none'>
 	<table>
 		<tr>
