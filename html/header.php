@@ -28,14 +28,14 @@ $currentUser = "fox016@gmail.com";
 				if($currentUser == "")
 				{
 				?>
-					<button id='signInBtn'>Sign In</button>
-					<button id='registerBtn'>Register</button>
+					<button id='signInBtn' onclick='signIn()'>Sign In</button>
+					<button id='registerBtn' onclick='register()'>Register</button>
 				<?php
 				}
 				else
 				{
 				?>
-					<?php echo "Hi, $currentUser"; ?>&nbsp;&nbsp;<button id='signInBtn'>Sign Out</button>
+					<?php echo "Hi, $currentUser"; ?>&nbsp;&nbsp;<button id='signInBtn' onclick='signOut()'>Sign Out</button>
 				<?php
 				}
 				?>
@@ -49,10 +49,10 @@ $currentUser = "fox016@gmail.com";
 		<td id='navWrapper'>
 			<table id='navLinkTable' class='wide'>
 				<tr>
-					<td class='navLink selected' id='tripsNav' onclick='showTrips()'>Trips</td>
+					<td class='navLink' id='tripNav' onclick='showTrips()'>Trips</td>
 				</tr>
 				<tr>
-					<td class='navLink' id='tripsNav' onclick='showMyVehicles()'>My Vehicles</td>
+					<td class='navLink' id='vehicleNav' onclick='showMyVehicles()'>My Vehicles</td>
 				</tr>
 			</table>
 		</td>
