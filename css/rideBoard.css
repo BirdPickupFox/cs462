@@ -8,6 +8,11 @@
 .wide {
 	width:100%;
 }
+.noborder {
+	border:none;
+	border-collapse:collapse;
+	border-spacing:0px;
+}
 html {
 	height:100%;
 }
@@ -23,5 +28,41 @@ div#pageHeader {
         border-color:rgb(100, 190, 220);
         border-style:solid;
         position:relative;
-        font-size:8pt;
+        font-size:10pt;
+}
+td#navWrapper {
+        padding-top:0px;
+        padding-left:20px;
+        padding-right:0px;
+        background:#DCDCDC;
+        vertical-align:top;
+        position:relative;
+        height:100%;
+        width:180px;
+        margin:0px;
+}
+table#navLinkTable {
+	margin-top:20px;
+	border-spacing:0px 10px;
+	border:none;
+}
+td.navLink.selected {
+	background:white;
+}
+td.navLink {
+	font-size:12pt;
+	cursor:pointer;
+	padding-left:10px;
+	padding-top:3px;
+	vertical-align:middle;
+	font-style:italic;
+}
+table#boxWrapper {
+        width:100%;
+        height:100%;
+}
+td#viewWrapper {
+        background:white;
+        height:100%;
+        vertical-align:top;
 }

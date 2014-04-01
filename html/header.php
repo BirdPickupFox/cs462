@@ -20,7 +20,7 @@ $currentUser = "fox016@gmail.com";
 <body>
 
 <div id='pageHeader'>
-	<table class='wide' id='headerTable'>
+	<table class='wide'>
 		<tr>
 			<td><img src='images/BYU_name_logo.png'></td>
 			<td class='right'>
@@ -29,6 +29,7 @@ $currentUser = "fox016@gmail.com";
 				{
 				?>
 					<button id='signInBtn'>Sign In</button>
+					<button id='registerBtn'>Register</button>
 				<?php
 				}
 				else
@@ -42,3 +43,18 @@ $currentUser = "fox016@gmail.com";
 		</tr>
 	</table>
 </div>
+
+<table id='boxWrapper' cellspacing='0px'>
+	<tr>
+		<td id='navWrapper'>
+			<table id='navLinkTable' class='wide'>
+				<tr>
+					<td class='navLink selected' id='tripsNav' onclick='showTrips()'>Trips</td>
+				</tr>
+				<tr>
+					<td class='navLink' id='tripsNav' onclick='showMyVehicles()'>My Vehicles</td>
+				</tr>
+			</table>
+		</td>
+		<td id='viewWrapper'>
+			<div id='dynamicContent'>
