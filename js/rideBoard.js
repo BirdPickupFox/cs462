@@ -498,6 +498,7 @@ function openNewTripEditor(startDate, endDate)
 				},
 				error: function(response)
 				{
+					$("#vehicleSelect").html("<option value='-1'>Choose Vehicle...</option>");
 					myAlert("Error getting vehicle list: " + response.responseText);
 				},
 			});
