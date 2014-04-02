@@ -180,6 +180,10 @@
 	</table>
 </div>
 
+<!-- Universal Alert Box -->
+<div id='alertBox' style='display:none'>
+</div>
+
 <!-- Universal Page Form -->
 <form id='pageForm' method='POST'>
 	<input type=hidden name='formAction' id='formAction' value=''>

@@ -76,3 +76,6 @@ table#calendarViewSelect td {
 table#newTripTable {
 	width:100%;
 }
+#tripCalendar {
+	margin:20px;
+}

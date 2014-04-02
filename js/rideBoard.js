@@ -4,6 +4,7 @@ var currentView = "agendaWeek"; // Current calendar view
 var googleMap = null; // Google Maps map object
 var directionsDisplay = null; // Google Maps display object
 var directionsService = new google.maps.DirectionsService(); // Google Maps direction service object
+var currentRoute = null; // Google Maps most recently returned route object
 
 /*
  * Opens dialog box for user to sign in
@@ -18,6 +19,8 @@ function signIn()
                 modal: true,
                 resizable: false,
                 open: function() {
+			$("#regEmail").val("");
+			$("#regPwd").val("");
                 },
                 close: function() {
                 },
@@ -34,6 +37,9 @@ function signIn()
         });
 }
 
+/*
+ * Checks user credentials from Sign In editor
+ */
 function checkCredentials()
 {
 	var email = $("#regEmail").val();
@@ -105,6 +111,42 @@ function createAccount()
 	$("#formPassword").val(password);
 
 	$("#pageForm").submit();
+}
+
+/*
+ * Validates new trip data from Create New Trip editor
+ */
+function isValidTrip()
+{
+	var vehicleId = $("#vehicleSelect").val();
+	var startDate = $("#startDate").val();
+	var endDate = $("#endDate").val();
+	var price = $("#totalPrice").val();
+
+	var errorStr = "";
+	if(vehicleId == -1)
+		errorStr += "You must select a vehicle (if you need to register a vehicle, see My Vehicles tab).<br>";
+	if(startDate.length != 10)
+		errorStr += "You must select a valid departure date (form dd/mm/yyyy).<br>";
+	if(endDate.length != 10)
+		errorStr += "You must select a valid arrival date (form dd/mm/yyyy).<br>";
+	if(currentRoute == null)
+		errorStr += "You must select a valid route.<br>";
+	if(isNaN(price))
+		errorStr += "You must set a numeric price.<br>";
+	
+	if(errorStr == "")
+		return true;
+	myAlert(errorStr);
+	return false;
+}
+
+/*
+ * Creates a new trip using data from Create New Trip editor
+ */
+function createTrip()
+{
+	myAlert("TODO create trip");
 }
 
 /*
@@ -290,7 +332,7 @@ function mapLookup(originId, destinationId)
 		if(statusCode == google.maps.DirectionsStatus.OK)
 		{
 			directionsDisplay.setDirections(response);
-			console.log(response);
+			currentRoute = response;
 		}
 	});
 }
@@ -310,6 +352,7 @@ function openNewTripEditor(startDate, endDate)
 		open: function()
 		{
 			// Initialize Google Maps
+			currentRoute = null;
 			$("#createTripMap").html("");
 			$("#createTripDirectionsPanel").html("");
 			directionsDisplay = new google.maps.DirectionsRenderer();
@@ -351,9 +394,36 @@ function openNewTripEditor(startDate, endDate)
 			{
 				text: "Create Trip",
 				id: "createTripBtn",
+				click: function()
+				{
+					if(isValidTrip())
+					{
+						createTrip();
+					}
+				},
+			},
+		],
+	});
+}
+
+/*
+ * Use dialog box for alert system
+ */
+function myAlert(str)
+{
+	$("#alertBox").html(str);
+	$("#alertBox").dialog({
+		width: 450,
+		height: 300,
+		title: "Alert",
+		modal: true,
+		buttons:
+		[
+			{
+				text: "OK",
+				id: "okBtn",
 				click: function() {
-					// TODO create trip
-					alert("TODO");
+					$(this).dialog('close');
 				},
 			},
 		],
