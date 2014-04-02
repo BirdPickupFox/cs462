@@ -12,7 +12,7 @@ else
 	die;
 }
 
-//TODO replace this test data with real data
+// TODO replace this test data with real data in same format
 $vehicleData = array(
 	array(
 		1, 		// unique id

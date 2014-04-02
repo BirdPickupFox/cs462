@@ -186,7 +186,32 @@ function createTrip()
  */
 function createVehicle()
 {
-	myAlert("TODO create vehicle");
+	var make = $("#vehicleMake").val();
+	var model = $("#vehicleModel").val();
+	var year = $("#vehicleYear").val();
+	var seatCount = $("#vehicleSeatCount").val();
+	var description = $("#vehicleDescription").val();
+
+	$.ajax({
+		dataType: "json",
+		type: "POST",
+		url: "controller/createVehicle.php",
+		data: {
+			make: make,
+			model: model,
+			year: year,
+			seatCount: seatCount,
+			description: description,
+		},
+		success: function(response)
+		{
+			myAlert("TODO - respond to create vehicle status: " + response.statusCode);
+		},
+		error: function(response)
+		{
+			myAlert("Error saving vehicle: " + response.responseText);
+		},
+	});
 }
 
 /*
