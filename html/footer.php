@@ -75,9 +75,9 @@
 		</tr>
 		<tr>
 			<th>Start Location</th>
-			<td><input type=text id='startLoc' onchange='mapLookup("startLoc", "endLoc")'></td>
+			<td><input type=text id='startLoc' onkeypress='mapLookup("startLoc", "endLoc")'></td>
 			<th>End Location</th>
-			<td><input type=text id='endLoc' onchange='mapLookup("startLoc", "endLoc")'></td>
+			<td><input type=text id='endLoc' onkeypress='mapLookup("startLoc", "endLoc")'></td>
 		</tr>
 		<tr>
 			<th>Departure Date</th>
@@ -172,7 +172,12 @@
 			<td colspan=3><input type=text id='totalPrice' class='wide'></td>
 		</tr>
 	</table>
-	<div id="createTripMap" style="width:100%;height:100%"></div>
+	<table style='width:100%;height:100%'>
+		<tr>
+			<td style='width:50%'><div id="createTripMap" style="width:100%;height:100%"></div></td>
+			<td style='width:50%'><div id="createTripDirectionsPanel" style="width:100%;height:100%"></div></td>
+		</tr>
+	</table>
 </div>
 
 <!-- Universal Page Form -->

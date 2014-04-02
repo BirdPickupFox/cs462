@@ -276,19 +276,22 @@ function mapLookup(originId, destinationId)
 	if(origin == "" || destination == "")
 		return;
 
-	var directionRequest = 
-	{
-		origin: "Chicago, IL",
-		destination: "Los Angeles, CA",
-		travelMode: TravelMode.DRIVING,
-		unitSystem: UnitSystem.IMPERIAL,
+	var request = {
+		origin: origin,
+		destination: destination,
+		travelMode: google.maps.TravelMode.DRIVING,
+		unitSystem: google.maps.UnitSystem.IMPERIAL,
 		durationInTraffic: false,
 		provideRouteAlternatives: false
 	};
 
-	directionsService.route(directionRequest, function(response, status) {
-		console.log(status);
-		console.log(response);
+	directionsService.route(request, function(response, statusCode)
+	{
+		if(statusCode == google.maps.DirectionsStatus.OK)
+		{
+			directionsDisplay.setDirections(response);
+			console.log(response);
+		}
 	});
 }
 
@@ -301,7 +304,7 @@ function openNewTripEditor(startDate, endDate)
 		draggable:true,
 		title: "Create New Trip",
 		height: 600,
-		width: 700,
+		width: 900,
 		modal: true,
 		resizable: false,
 		open: function()
@@ -314,6 +317,7 @@ function openNewTripEditor(startDate, endDate)
 			}
 			googleMap = new google.maps.Map(document.getElementById("createTripMap"), mapOptions);
 			directionsDisplay.setMap(googleMap);
+			directionsDisplay.setPanel(document.getElementById("createTripDirectionsPanel"));
 
 			// Initialize datepickers
 			$("#startDate").datepicker();

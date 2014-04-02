@@ -73,3 +73,6 @@ table#calendarViewSelect td {
 	width:100px;
 	cursor:pointer;
 }
+table#newTripTable {
+	width:100%;
+}
