@@ -256,11 +256,12 @@ function initVehicleTable()
 {
 	vehicleTable = $("#vehicleTable").dataTable({
 		"aoColumnDefs": [
-			{"bSortable": false, "sWidth": "15%", "aTargets":[0]}, // Make
-			{"bSortable": false, "sWidth": "15%", "aTargets":[1]}, // Model
-			{"bSortable": false, "sWidth": "15%", "aTargets":[2]}, // Year
-			{"bSortable": false, "sWidth": "15%", "aTargets":[3]}, // Seat Count
-			{"bSortable": false, "sWidth": "40%", "aTargets":[4]}, // Description
+			{"bSortable": false, "sWidth": "5%", "aTargets":[0]}, // ID
+			{"bSortable": false, "sWidth": "15%", "aTargets":[1]}, // Make
+			{"bSortable": false, "sWidth": "15%", "aTargets":[2]}, // Model
+			{"bSortable": false, "sWidth": "10%", "aTargets":[3]}, // Year
+			{"bSortable": false, "sWidth": "15%", "aTargets":[4]}, // Seat Count
+			{"bSortable": false, "sWidth": "40%", "aTargets":[5]}, // Description
 		],
 		"bAutoWidth": false,
 		"bLengthChange": false,
@@ -421,8 +422,26 @@ function openNewTripEditor(startDate, endDate)
 			var startTime = getTime(startDate);
 			var endTime = getTime(endDate);
 
+			// Load vehicle list
+			$("#vehicleSelect").html("");
+			$.ajax({
+				type: 'POST',
+				url: 'controller/getMyVehicles.php',
+				data: {},
+				success: function(response)
+				{
+					var vehicleData = JSON.parse(response)['aaData'];
+					$("#vehicleSelect").html("<option value='-1'>Choose Vehicle...</option>");
+					for(var i = 0; i < vehicleData.length; i++)
+						$("#vehicleSelect").append("<option value='" + vehicleData[i][0] + "'>" + vehicleData[i][3] + " " + vehicleData[i][1] + " " + vehicleData[i][2] + "</option>");
+				},
+				error: function(response)
+				{
+					myAlert("Error: failed to get vehicle list");
+				},
+			});
+
 			// Prepopulate data
-			$("#vehicleSelect").val('-1');
 			$("#startLoc").val('');
 			$("#endLoc").val('');
 			$("#startDate").datepicker('setDate', startDate);
@@ -460,7 +479,33 @@ function openNewTripEditor(startDate, endDate)
  */ 
 function openVehicleEditor()
 {
-	myAlert("TODO - openVehicleEditor()");
+	$("#vehicleEditor").dialog({
+		draggable: true,
+		title: "Vehicle Editor",
+		height: 330,
+		width: 600,
+		modal: true,
+		resizable: true,
+		open: function() {
+			$("#vehicleMake").val("");
+			$("#vehicleModel").val("");
+			$("#vehicleYear").val("");
+			$("#vehicleSeatCount").val("");
+			$("#vehicleDescription").val("");
+		},
+		close: function() {
+		},
+		buttons:
+		[
+			{
+				text: "Save Vehicle",
+				id: "saveVehicleBtn",
+				click: function() {
+					myAlert("TODO - save vehicle");
+				},
+			},
+		],
+	});
 }
 
 /*

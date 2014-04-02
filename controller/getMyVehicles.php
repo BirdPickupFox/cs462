@@ -3,6 +3,7 @@
 //TODO replace this test data with real data
 $vehicleData = array(
 	array(
+		1,
 		"Toyota",
 		"Camry",
 		2011,
@@ -10,6 +11,7 @@ $vehicleData = array(
 		"Large trunk, Pandora, Auxilliary input",
 	),
 	array(
+		2,
 		"Dodge",
 		"Ram",
 		2004,

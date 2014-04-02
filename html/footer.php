@@ -44,6 +44,7 @@
 	<table id='vehicleTable'>
 		<thead>
 			<tr>
+				<th>ID</th>
 				<th>Make</th>
 				<th>Model</th>
 				<th>Year</th>
@@ -189,6 +190,32 @@
 		<tr>
 			<td style='width:50%'><div id="createTripMap" style="width:100%;height:100%"></div></td>
 			<td style='width:50%'><div id="createTripDirectionsPanel" style="width:100%;height:100%"></div></td>
+		</tr>
+	</table>
+</div>
+
+<!-- Vehicle Editor -->
+<div id='vehicleEditor' style='display:none'>
+	<table id='vehicleEditorTable'>
+		<tr>
+			<th>Make</th>
+			<td><input class='wide' type=text id='vehicleMake'></td>
+		</tr>
+		<tr>
+			<th>Model</th>
+			<td><input class='wide' type=text id='vehicleModel'></td>
+		</tr>
+		<tr>
+			<th>Year</th>
+			<td><input class='wide' type=text id='vehicleYear'></td>
+		</tr>
+		<tr>
+			<th>Seat Count</th>
+			<td><input class='wide' type=text id='vehicleSeatCount'></td>
+		</tr>
+		<tr>
+			<th>Description</th>
+			<td><input class='wide' type=text id='vehicleDescription'></td>
 		</tr>
 	</table>
 </div>
