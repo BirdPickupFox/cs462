@@ -1,3 +1,10 @@
+// Globals
+var viewNames = ["agendaDay", "agendaWeek", "month"]; // List of calendar views
+var currentView = "agendaWeek"; // Current calendar view
+var googleMap = null; // Google Maps map object
+var directionsDisplay = null; // Google Maps display object
+var directionsService = new google.maps.DirectionsService(); // Google Maps direction service object
+
 /*
  * Opens dialog box for user to sign in
  */
@@ -141,10 +148,6 @@ function selectNavigation(id)
 	$("#" + id).addClass('selected');
 }
 
-// Globals for calendar
-var viewNames = ["agendaDay", "agendaWeek", "month"];
-var currentView = "agendaWeek";
-
 /*
  * Initializes trip calendar
  */
@@ -263,6 +266,33 @@ function getTime(dateObj)
 }
 
 /*
+ * Ask google maps for directions
+ */
+function mapLookup(originId, destinationId)
+{
+	var origin = $("#" + originId).val();
+	var destination = $("#" + destinationId).val();
+
+	if(origin == "" || destination == "")
+		return;
+
+	var directionRequest = 
+	{
+		origin: "Chicago, IL",
+		destination: "Los Angeles, CA",
+		travelMode: TravelMode.DRIVING,
+		unitSystem: UnitSystem.IMPERIAL,
+		durationInTraffic: false,
+		provideRouteAlternatives: false
+	};
+
+	directionsService.route(directionRequest, function(response, status) {
+		console.log(status);
+		console.log(response);
+	});
+}
+
+/*
  * Opens New Trip dialog to allow user to create a new trip
  */
 function openNewTripEditor(startDate, endDate)
@@ -270,12 +300,21 @@ function openNewTripEditor(startDate, endDate)
 	$("#newTripEditor").dialog({
 		draggable:true,
 		title: "Create New Trip",
-		height: 320,
+		height: 600,
 		width: 700,
 		modal: true,
-		resizable: true,
+		resizable: false,
 		open: function()
 		{
+			// Initialize Google Maps
+			directionsDisplay = new google.maps.DirectionsRenderer();
+			var mapOptions = {
+				center: {lat: 40.24, lng: -111.67},
+				zoom: 6
+			}
+			googleMap = new google.maps.Map(document.getElementById("createTripMap"), mapOptions);
+			directionsDisplay.setMap(googleMap);
+
 			// Initialize datepickers
 			$("#startDate").datepicker();
 			$("#endDate").datepicker();

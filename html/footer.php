@@ -75,9 +75,9 @@
 		</tr>
 		<tr>
 			<th>Start Location</th>
-			<td><input type=text id='startLoc'></td>
+			<td><input type=text id='startLoc' onchange='mapLookup("startLoc", "endLoc")'></td>
 			<th>End Location</th>
-			<td><input type=text id='endLoc'></td>
+			<td><input type=text id='endLoc' onchange='mapLookup("startLoc", "endLoc")'></td>
 		</tr>
 		<tr>
 			<th>Departure Date</th>
@@ -172,6 +172,7 @@
 			<td colspan=3><input type=text id='totalPrice' class='wide'></td>
 		</tr>
 	</table>
+	<div id="createTripMap" style="width:100%;height:100%"></div>
 </div>
 
 <!-- Universal Page Form -->
