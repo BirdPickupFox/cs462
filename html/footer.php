@@ -69,7 +69,7 @@
 			<th>Vehicle</th>
 			<td colspan=3>
 				<select id='vehicleSelect' class='wide'>
-					<option>Choose Vehicle...</option>
+					<option value='-1'>Choose Vehicle...</option>
 				</select>
 			</td>
 		</tr>
@@ -90,7 +90,12 @@
 							<select id='startTimeHour'>
 								<?php
 								for($i=1; $i <= 12; $i++)
-									echo "<option>$i</option>";
+								{
+									if($i < 10)
+										echo "<option>0$i</option>";
+									else
+										echo "<option>$i</option>";
+								}
 								?>
 							</select>
 						</td>
@@ -99,7 +104,12 @@
 							<select id='startTimeMinute'>
 								<?php
 								for($i=0; $i <= 60; $i++)
-									echo "<option>$i</option>";
+								{
+									if($i < 10)
+										echo "<option>0$i</option>";
+									else
+										echo "<option>$i</option>";
+								}
 								?>
 							</select>
 						</td>
@@ -124,7 +134,12 @@
 							<select id='endTimeHour'>
 								<?php
 								for($i=1; $i <= 12; $i++)
-									echo "<option>$i</option>";
+								{
+									if($i < 10)
+										echo "<option>0$i</option>";
+									else
+										echo "<option>$i</option>";
+								}
 								?>
 							</select>
 						</td>
@@ -132,8 +147,13 @@
 						<td>
 							<select id='endTimeMinute'>
 								<?php
-								for($i=0; $i <= 60; $i++)
-									echo "<option>$i</option>";
+								for($i=0; $i < 60; $i++)
+								{
+									if($i < 10)
+										echo "<option>0$i</option>";
+									else
+										echo "<option>$i</option>";
+								}
 								?>
 							</select>
 						</td>

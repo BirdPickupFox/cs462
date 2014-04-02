@@ -192,9 +192,44 @@ function gotoToday()
 }
 
 /*
+ * Break down a date object into hour(01-12), minute(00-59), period(AM | PM)
+ * Return array
+ */
+function getTime(dateObj)
+{
+	var hour = dateObj.getHours();
+	var minute = dateObj.getMinutes();
+	var per = "AM";
+
+	if(hour == 0)
+	{
+		hour = 12;
+		per = "AM";
+	}
+	else if(hour < 12)
+	{
+		per = "AM";
+	}
+	else
+	{
+		hour -= 12;
+		per = "PM";
+	}
+
+	hour = hour + "";
+	minute = minute + "";
+	if(hour.length == 1)
+		hour = "0" + hour;
+	if(minute.length == 1)
+		minute = "0" + minute;
+	
+	return [hour, minute, per];
+}
+
+/*
  * Opens New Trip dialog to allow user to create a new trip
  */
-function openNewTripEditor()
+function openNewTripEditor(startDate, endDate)
 {
 	$("#newTripEditor").dialog({
 		draggable:true,
@@ -203,9 +238,32 @@ function openNewTripEditor()
 		width: 700,
 		modal: true,
 		resizable: true,
-		open: function() {
+		open: function()
+		{
+			// Initialize datepickers
+			$("#startDate").datepicker();
+			$("#endDate").datepicker();
+
+			// Break apart start and end date
+			var startTime = getTime(startDate);
+			var endTime = getTime(endDate);
+
+			// Prepopulate data
+			$("#vehicleSelect").val('-1');
+			$("#startLoc").val('');
+			$("#endLoc").val('');
+			$("#startDate").datepicker('setDate', startDate);
+			$("#startTimeHour").val(startTime[0]);
+			$("#startTimeMinute").val(startTime[1]);
+			$("#startTimePeriod").val(startTime[2]);
+			$("#endDate").datepicker('setDate', endDate);
+			$("#endTimeHour").val(endTime[0]);
+			$("#endTimeMinute").val(endTime[1]);
+			$("#endTimePeriod").val(endTime[2]);
+			$("#totalPrice").val('');
 		},
 		close: function() {
+			$(this).dialog('destroy');
 		},
 		buttons:
 		[
