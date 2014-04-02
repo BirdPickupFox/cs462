@@ -320,10 +320,9 @@ function initVehicleTable()
 				{
 					fnCallback(response);
 				},
-				error: function(resposne)
+				error: function(response)
 				{
-					myAlert("Error loading vehicle table");
-					console.log(response);
+					myAlert("Error loading vehicle table: " + response.responseText);
 				},
 			});
 		},
@@ -461,19 +460,20 @@ function openNewTripEditor(startDate, endDate)
 			// Load vehicle list
 			$("#vehicleSelect").html("");
 			$.ajax({
+				dataType: "json",
 				type: 'POST',
 				url: 'controller/getMyVehicles.php',
 				data: {},
 				success: function(response)
 				{
-					var vehicleData = JSON.parse(response)['aaData'];
+					var vehicleData = response.aaData;
 					$("#vehicleSelect").html("<option value='-1'>Choose Vehicle...</option>");
 					for(var i = 0; i < vehicleData.length; i++)
 						$("#vehicleSelect").append("<option value='" + vehicleData[i][0] + "'>" + vehicleData[i][3] + " " + vehicleData[i][1] + " " + vehicleData[i][2] + "</option>");
 				},
 				error: function(response)
 				{
-					myAlert("Error: failed to get vehicle list");
+					myAlert("Error getting vehicle list: " + response.responseText);
 				},
 			});
 

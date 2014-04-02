@@ -1,14 +1,26 @@
 <?php
 
+// Get current user from cookie
+$currentUser = "";
+if(isset($_COOKIE['currentUser']))
+{
+	$currentUser = $_COOKIE['currentUser'];
+}
+else
+{
+	echo "You must sign in to load your vehicle list";
+	die;
+}
+
 //TODO replace this test data with real data
 $vehicleData = array(
 	array(
-		1,
-		"Toyota",
-		"Camry",
-		2011,
-		5,
-		"Large trunk, Pandora, Auxilliary input",
+		1, 		// unique id
+		"Toyota", 	// make
+		"Camry", 	// model
+		2011, 		// year
+		5, 		// seat count
+		"Large trunk, Pandora, Auxilliary input", // description
 	),
 	array(
 		2,
