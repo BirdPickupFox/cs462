@@ -310,6 +310,8 @@ function openNewTripEditor(startDate, endDate)
 		open: function()
 		{
 			// Initialize Google Maps
+			$("#createTripMap").html("");
+			$("#createTripDirectionsPanel").html("");
 			directionsDisplay = new google.maps.DirectionsRenderer();
 			var mapOptions = {
 				center: {lat: 40.24, lng: -111.67},
