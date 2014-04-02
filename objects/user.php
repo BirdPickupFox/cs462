@@ -4,33 +4,25 @@ class User
 {
 	public $email;
 	public $password;
+	public $error;
 
 	public function __construct($email, $password)
 	{
 		$this->email = $email;
 		$this->password = $password;
 
-		$this->createUser();
+		$this->error = $this->createUser();
 	}
 
 	private function createUser()
 	{
 		global $db;
-		var_dump($db);
-		// TODO check if email is unique, if not throw exception
-		$result = $db->querySingle('SELECT * FROM users WHERE email="' . $this->email . '"');
+		$result = $db->querySingle("SELECT * FROM users WHERE email='{$this->email}'");
 		if($result == NULL)
 		{
-		// TODO add user to database
-			echo "Adding User";
-//			This has runtime permission problems
-//			$db->exec('INSERT INTO users VALUES("bilbo1","bilbo2")');
-//			$db->exec('INSERT INTO users VALUES("' . $this->email . '","' . $this->password . '")');
+			$db->exec("INSERT INTO users VALUES('{$this->email}','{$this->password}')");
+			return NULL;
 		}
-		else
-		{
-			//throw exception
-			echo "User Exists";
-		}
+		return "Error: a user with this email address already exists";
 	}
 }

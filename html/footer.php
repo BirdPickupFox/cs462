@@ -189,5 +189,10 @@
 	<input type=hidden name='formAction' id='formAction' value=''>
 </form>
 
+<!-- Footer -->
+<footer>
+	<?php echo $inject;?>
+</footer>
+
 </body>
 </html>
