@@ -60,7 +60,7 @@ if(isset($_REQUEST['formAction']))
 		}
 		else
 		{
-			myAlert("Invalid email and/or password");
+			myAlert("Error: Invalid email and/or password");
 		}
 	}
 

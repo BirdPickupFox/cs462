@@ -146,11 +146,47 @@ function isValidTrip()
 }
 
 /*
+ * Validates vehicle data from Vehicle editor
+ */
+function isValidVehicle()
+{
+	var make = $("#vehicleMake").val();
+	var model = $("#vehicleModel").val();
+	var year = $("#vehicleYear").val();
+	var seatCount = $("#vehicleSeatCount").val();
+
+	var errorStr = "";
+	if(make.length == 0)
+		errorStr += "You must enter a vehicle make.<br>";
+	if(model.length == 0)
+		errorStr += "You must enter a vehicle model.<br>";
+	if(year.length != 4 || isNaN(year))
+		errorStr += "You must enter a 4-digit vehicle year.<br>";
+	if(isNaN(seatCount))
+		errorStr += "You must enter a numerical seat count.<br>";
+	else if(seatCount < 2)
+		errorStr += "Seat count must be at least 2.<br>";
+
+	if(errorStr == "")
+		return true;
+	myAlert(errorStr);
+	return false;
+}
+
+/*
  * Creates a new trip using data from Create New Trip editor
  */
 function createTrip()
 {
 	myAlert("TODO create trip");
+}
+
+/*
+ * Creates a vehicle using data from Vehicle editor
+ */
+function createVehicle()
+{
+	myAlert("TODO create vehicle");
 }
 
 /*
@@ -501,7 +537,10 @@ function openVehicleEditor()
 				text: "Save Vehicle",
 				id: "saveVehicleBtn",
 				click: function() {
-					myAlert("TODO - save vehicle");
+					if(isValidVehicle())
+					{
+						createVehicle();
+					}
 				},
 			},
 		],
