@@ -25,18 +25,25 @@ if(isset($_REQUEST['formAction']))
 	{
 		$email = $_REQUEST['formEmail'];
 		$password = $_REQUEST['formPassword'];
-
-		$user = new User($email, $password, $db);
-		if($user->error === NULL)
+	
+		if(filter_var($email, FILTER_VALIDATE_EMAIL))
 		{
-			$currentUser = $email;
-			setcookie('currentUser', $currentUser, time()+(3600*8), "/");
+			$user = new User($email, $password, $db);
+			if($user->error === NULL)
+			{
+				$currentUser = $email;
+				setcookie('currentUser', $currentUser, time()+(3600*8), "/");
+			}
+			else
+			{
+				myAlert($user->error);
+				$currentUser = "";
+				setcookie('currentUser', $currentUser, time()-(3600*8), "/");
+			}
 		}
 		else
 		{
-			myAlert($user->error);
-			$currentUser = "";
-			setcookie('currentUser', $currentUser, time()-(3600*8), "/");
+			myAlert("Error: \"$email\" is not a valid email address");
 		}
 	}
 

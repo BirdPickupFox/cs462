@@ -4,10 +4,12 @@
 	<link rel='stylesheet' href='css/rideBoard.css'>
 	<link rel='stylesheet' href='css/light-theme/jquery-ui-1.10.4.custom.css'>
 	<link rel='stylesheet' href='js/fullcalendar/fullcalendar.css'>
+	<link rel='stylesheet' href='js/datatables/css/jquery.dataTables.css'>
 	<script type='text/javascript' src='http://maps.googleapis.com/maps/api/js?key=AIzaSyByo6j6i9-kvorsgcw-v8BV1qPgyMdz5XU&sensor=false'></script>
 	<script type='text/javascript' src='js/jquery-1.10.2.js'></script>
 	<script type='text/javascript' src='js/jquery-ui-1.10.4.custom.min.js'></script>
 	<script type='text/javascript' src='js/fullcalendar/fullcalendar.js'></script>
+	<script type='text/javascript' src='js/datatables/js/jquery.dataTables.js'></script>
 	<script type='text/javascript' src='js/rideBoard.js'></script>
 </head>
 <body>

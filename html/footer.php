@@ -40,7 +40,20 @@
 
 <!-- My Vehicles Page -->
 <div id='vehiclePage' style='display:none'>
-	<div>This is the vehicle page</div>
+	<button id='registerVehicleBtn' onclick='openVehicleEditor()'>Register Vehicle</button>
+	<table id='vehicleTable'>
+		<thead>
+			<tr>
+				<th>Make</th>
+				<th>Model</th>
+				<th>Year</th>
+				<th>Seat Count</th>
+				<th>Description</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
 </div>
 
 <!-- My Notifications Page -->

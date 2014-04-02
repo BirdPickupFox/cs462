@@ -79,3 +79,22 @@ table#newTripTable {
 #tripCalendar {
 	margin:20px;
 }
+#registerVehicleBtn {
+	font-size:12pt;
+	padding:3px 20px;
+	margin:20px 0px 10px 20px;
+}
+#vehicleTable {
+	margin:0px 20px;
+}
+#vehicleTable thead th {
+	padding:5px 0px 5px 10px;
+	font-weight:normal;
+	font-style:italic;
+	font-size:12pt;
+	text-align:left;
+	background:#EEE;
+}
+#tableFoot {
+	margin:0px 20px;
+}

@@ -1,10 +1,14 @@
-// Globals
-var viewNames = ["agendaDay", "agendaWeek", "month"]; // List of calendar views
-var currentView = "agendaWeek"; // Current calendar view
-var googleMap = null; // Google Maps map object
-var directionsDisplay = null; // Google Maps display object
+// Begin Globals
+var viewNames = ["agendaDay", "agendaWeek", "month"]; 	// List of calendar views
+var currentView = "agendaWeek";				// Current calendar view
+
+var googleMap = null;		// Google Maps map object
+var directionsDisplay = null; 	// Google Maps display object
 var directionsService = new google.maps.DirectionsService(); // Google Maps direction service object
-var currentRoute = null; // Google Maps most recently returned route object
+var currentRoute = null; 	// Google Maps most recently returned route object
+
+var vehicleTable = null; 	// Datatable table for vehicles
+// End Globals
 
 /*
  * Opens dialog box for user to sign in
@@ -167,6 +171,7 @@ function showMyVehicles()
 {
 	selectNavigation("vehicleNav");
 	$("#dynamicContent").html($("#vehiclePage").html());
+	initVehicleTable();
 }
 
 /*
@@ -240,6 +245,50 @@ function initTripCalendar()
 			month: 'dddd',
 			week: 'dddd M/d',
 			day: 'dddd M/d',
+		},
+	});
+}
+
+/*
+ * Initializes vehicle table
+ */
+function initVehicleTable()
+{
+	vehicleTable = $("#vehicleTable").dataTable({
+		"aoColumnDefs": [
+			{"bSortable": false, "sWidth": "15%", "aTargets":[0]}, // Make
+			{"bSortable": false, "sWidth": "15%", "aTargets":[1]}, // Model
+			{"bSortable": false, "sWidth": "15%", "aTargets":[2]}, // Year
+			{"bSortable": false, "sWidth": "15%", "aTargets":[3]}, // Seat Count
+			{"bSortable": false, "sWidth": "40%", "aTargets":[4]}, // Description
+		],
+		"bAutoWidth": false,
+		"bLengthChange": false,
+		"bPaginate": false,
+		"bProcessing": false,
+		"bServerSide": true,
+		"oLanguage": {
+			"sEmptyTable": "You have no registered vehicles",
+		},
+		"sAjaxSource": "controller/getMyVehicles.php",
+		"sDom": "<t>",
+		"fnServerData": function(sSource, aoData, fnCallback, oSettings)
+		{
+			oSettings.jqXHR = $.ajax({
+				dataType: "json",
+				type: "POST",
+				url: sSource,
+				data: aoData,
+				success: function(response)
+				{
+					fnCallback(response);
+				},
+				error: function(resposne)
+				{
+					myAlert("Error loading vehicle table");
+					console.log(response);
+				},
+			});
 		},
 	});
 }
@@ -404,6 +453,14 @@ function openNewTripEditor(startDate, endDate)
 			},
 		],
 	});
+}
+
+/*
+ * Open editor to create vehicle
+ */ 
+function openVehicleEditor()
+{
+	myAlert("TODO - openVehicleEditor()");
 }
 
 /*
