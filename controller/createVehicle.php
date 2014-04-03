@@ -27,14 +27,14 @@ $vehicle = new Vehicle($currentUser, $year, $make, $model, $seatCount, $descript
 
 $statusCode;
 $errorMsg;
-if ($vehicle->error === NULL)
+if($vehicle->error === NULL)
 {
 	$statusCode = 200;
 }
 else
 {
 	$statusCode = 500;
-	$errorMsg = "Error: failed to insert into table";
+	$errorMsg = $vehicle->error;
 }
 
 // Print JSON output

@@ -17,21 +17,18 @@ else
 
 
 $results = $db->query("SELECT * FROM vehicles WHERE owner='".$currentUser."'");
-//$statement = $db->prepare("SELECT * FROM vehicles WHERE owner=:owner;");
-//$statement->bindValue(":owner", $currentUser);
-//$results = $statement->execute();
 
 $i=0;
 $vehicleData = array();
 while ($row = $results->fetchArray()) {
 	$vehicleData[$i] = array(
-								$row['vehicle_id'],
-								$row['year'],
-								$row['make'],
-								$row['model'],
-								$row['seat_count'],
-								$row['description'],
-							);
+		$row['vehicle_id'],
+		$row['make'],
+		$row['model'],
+		$row['year'],
+		$row['seat_count'],
+		$row['description'],
+	);
 	$i += 1;
 }
 $myVehicleCount = count($vehicleData);

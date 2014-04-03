@@ -239,7 +239,15 @@ function createVehicle()
 		},
 		success: function(response)
 		{
-			myAlert("TODO - respond to create vehicle status: " + response.statusCode);
+			if(response.statusCode == 500)
+			{
+				myAlert("Error creating vehicle: " + response.errorMsg);
+			}
+			else if(response.statusCode == 200)
+			{
+				$("#vehicleEditor").dialog('close');
+				vehicleTable.fnDraw();
+			}
 		},
 		error: function(response)
 		{

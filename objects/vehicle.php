@@ -26,13 +26,14 @@ class Vehicle
 	{
 		global $db;
 		
-		$query = "INSERT INTO vehicles VALUES(null,{$this->year},'{$this->make}','{$this->model}',{$this->seatCount},'{$this->description}','{$this->owner}')";
+		$query = "INSERT INTO vehicles (year, make, model, seat_count, description, owner)
+				VALUES({$this->year},'{$this->make}','{$this->model}',{$this->seatCount},'{$this->description}','{$this->owner}')";
 		$result = $db->exec($query);
 		
-		if ($result)
+		if($result)
 		{
 			return NULL;
 		}
-		return "Error: a user with this email address already exists";
+		return $db->lastErrorMsg();
 	}
 }
