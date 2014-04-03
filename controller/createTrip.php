@@ -1,6 +1,6 @@
 <?php
 
-require_once('../objects/vehicle.php');
+require_once('../objects/trip.php');
 
 // Get current user from cookie
 $currentUser = "";
@@ -10,9 +10,12 @@ if(isset($_COOKIE['currentUser']))
 }
 else
 {
-	echo "You must sign in to register a vehicle";
+	echo "You must sign in to create a trip";
 	die;
 }
+
+// Setup database
+$db = new SQLite3('../db/ride_board.db');
 
 // Get data from browser
 $vehicleId = $_POST['vehicleId'];
@@ -22,10 +25,13 @@ $origin = $_POST['origin'];
 $destination = $_POST['destination'];
 $price = $_POST['price'];
 
-// TODO Save trip to Google Calendar
-
-// TODO Save trip in database
-$db = new SQLite3('../db/ride_board.db');
-
-// TODO add current user as trip_user (request accepted)
-
+// Add trip to database
+$trip = new Trip($startDateTime, $endDateTime, $origin, $destination, $vehicleId, $price);
+if($trip->error === NULL)
+{
+	$trip->addUser($currentUser, true);
+}
+else
+{
+	echo "Error creating trip: " . $trip->error;
+}
