@@ -198,8 +198,8 @@ function createTrip()
 		url: "controller/createTrip.php",
 		data: {
 			vehicleId: vehicleId,
-			startDateTime: startDate.toLocaleString(),
-			endDateTime: endDate.toLocaleString(),
+			startDateTime: startDate.getTime() / 1000,
+			endDateTime: endDate.getTime() / 1000,
 			origin: origin,
 			destination: destination,
 			price: price,
@@ -311,7 +311,7 @@ function initTripCalendar()
 		selectHelper: true,
 		events: function(start, end, callback)
 		{
-			// TODO load trips
+			loadTrips(start, end, callback);
 		},
 		eventClick: function(calEvent)
 		{
@@ -428,7 +428,7 @@ function gotoToday()
  * Break down a date object into hour(01-12), minute(00-59), period(AM | PM)
  * Return array
  */
-function getTime(dateObj)
+function splitTime(dateObj)
 {
 	var hour = dateObj.getHours();
 	var minute = dateObj.getMinutes();
@@ -490,6 +490,33 @@ function mapLookup(originId, destinationId)
 }
 
 /*
+ * Loads trips onto full calendar
+ */
+function loadTrips(startDate, endDate, callback)
+{
+	$.ajax({
+		dataType: "json",
+		type: "POST",
+		url: "controller/getTrips.php",
+		data: {
+			startDate: startDate.getTime() / 1000,
+			endDate: endDate.getTime() / 1000,
+			onlyMine: "false", // TODO
+			origin: "", // TODO
+			destination: "", // TODO
+		},
+		success: function(response)
+		{
+			callback(response);
+		},
+		error: function(response)
+		{
+			myAlert("Failed to get trips: " + response.responseText);
+		},
+	});
+}
+
+/*
  * Opens New Trip dialog to allow user to create a new trip
  */
 function openNewTripEditor(startDate, endDate)
@@ -521,8 +548,8 @@ function openNewTripEditor(startDate, endDate)
 			$("#endDate").datepicker();
 
 			// Break apart start and end date
-			var startTime = getTime(startDate);
-			var endTime = getTime(endDate);
+			var startTime = splitTime(startDate);
+			var endTime = splitTime(endDate);
 
 			// Load vehicle list
 			$("#vehicleSelect").html("");

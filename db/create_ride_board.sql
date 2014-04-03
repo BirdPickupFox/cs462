@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS vehicles;
 DROP TABLE IF EXISTS trips;
 DROP TABLE IF EXISTS trip_users;
 DROP TABLE IF EXISTS requests;
+DROP TABLE IF EXISTS notifications;
 
 CREATE TABLE users
 (
@@ -27,8 +28,8 @@ CREATE TABLE trips
 	trip_id integer primary key autoincrement,
 	origin_loc varchar(255) not null,
 	destination_loc varchar(255) not null,
-	departure_date_time varchar(255) not null,
-	arrival_date_time varchar(255) not null,
+	departure_date_time integer not null,
+	arrival_date_time integer not null,
 	vehicle_id varchar(20) not null,
 	google_calendar_id varchar(255),
 	total_cost integer,
@@ -49,9 +50,16 @@ CREATE TABLE requests
 	user_email varchar(255) not null,
 	start_loc varchar(255),
 	end_loc varchar(255),
-	departure_date_range_start varchar(255),
-	departure_date_range_end varchar(255),
-	arrival_date_range_start varchar(255),
-	arrival_date_range_end varchar(255),
+	departure_date_range_start integer,
+	departure_date_range_end integer,
+	arrival_date_range_start integer,
+	arrival_date_range_end integer,
+	foreign key (user_email) references users(email)
+);
+
+CREATE TABLE notifications
+(
+	user_email varchar(255) not null,
+	text varchar(4000) not null,
 	foreign key (user_email) references users(email)
 );
