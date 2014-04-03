@@ -1,5 +1,8 @@
 <?php
 
+// Query database for vehicles registered to current user
+$db = new SQLite3('../db/ride_board.db');
+
 // Get current user from cookie
 $currentUser = "";
 if(isset($_COOKIE['currentUser']))
@@ -12,25 +15,25 @@ else
 	die;
 }
 
-// TODO replace this test data with real data in same format
-$vehicleData = array(
-	array(
-		1, 		// unique id
-		"Toyota", 	// make
-		"Camry", 	// model
-		2011, 		// year
-		5, 		// seat count
-		"Large trunk, Pandora, Auxilliary input", // description
-	),
-	array(
-		2,
-		"Dodge",
-		"Ram",
-		2004,
-		5,
-		"Truck, large bed, not much leg room in back",
-	),
-);
+
+$results = $db->query("SELECT * FROM vehicles WHERE owner='".$currentUser."'");
+//$statement = $db->prepare("SELECT * FROM vehicles WHERE owner=:owner;");
+//$statement->bindValue(":owner", $currentUser);
+//$results = $statement->execute();
+
+$i=0;
+$vehicleData = array();
+while ($row = $results->fetchArray()) {
+	$vehicleData[$i] = array(
+								$row['vehicle_id'],
+								$row['year'],
+								$row['make'],
+								$row['model'],
+								$row['seat_count'],
+								$row['description'],
+							);
+	$i += 1;
+}
 $myVehicleCount = count($vehicleData);
 
 // Print JSON output
