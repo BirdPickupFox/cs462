@@ -178,7 +178,41 @@ function isValidVehicle()
  */
 function createTrip()
 {
-	myAlert("TODO create trip");
+	var vehicleId = $("#vehicleSelect").val();
+	var startDate = new Date($("#startDate").val() + " " + 
+					$("#startTimeHour").val() + ":" +
+					$("#startTimeMinute").val() + " " +
+					$("#startTimePeriod").val());
+	var endDate = new Date($("#endDate").val() + " " +
+					$("#endTimeHour").val() + ":" +
+					$("#endTimeMinute").val() + " " +
+					$("#endTimePeriod").val());
+	var price = $("#totalPrice").val();
+
+	var origin = currentRoute['routes'][0]['legs'][0]['start_address'];
+	var destination = currentRoute['routes'][0]['legs'][0]['end_address'];
+
+	$.ajax({
+		dataType: "json",
+		type: "POST",
+		url: "controller/createTrip.php",
+		data: {
+			vehicleId: vehicleId,
+			startDateTime: startDate.toLocaleString(),
+			endDateTime: endDate.toLocaleString(),
+			origin: origin,
+			destination: destination,
+			price: price,
+		},
+		success: function(response)
+		{
+			myAlert("TODO - respond to create trip");
+		},
+		error: function(response)
+		{
+			myAlert("Error saving trip: " + response.responseText);
+		},
+	});
 }
 
 /*
