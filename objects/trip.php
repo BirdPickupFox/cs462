@@ -53,7 +53,14 @@ class Trip
 		$calendarId = "5hrmsdsdmncm5f0vo3pm37bigo%40group.calendar.google.com";
 		$apiKey = "AIzaSyByo6j6i9-kvorsgcw-v8BV1qPgyMdz5XU";
 
-		$request = "{}"; // TODO
+		$body = array();
+		$body['end'] = array();
+		$body['start'] = array();
+		$body['start']['dateTime'] = $this->parseTime($this->start);
+		$body['end']['dateTime'] = $this->parseTime($this->end);
+		$body['summary'] = $this->origin . " to " . $this->destination;
+		$request = json_encode($body);
+		$authToken = ""; // TODO
 
 		$call = curl_init();
 		curl_setopt($call, CURLOPT_SSL_VERIFYPEER, false);
@@ -61,8 +68,15 @@ class Trip
 		curl_setopt($call, CURLOPT_URL, "https://www.googleapis.com/calendar/v3/calendars/$calendarId/events?sendNotifications=false&key=$apiKey");
 		curl_setopt($call, CURLOPT_POST, true);
 		curl_setopt($call, CURLOPT_POSTFIELDS, $request);
-		curl_setopt($call, CURLOPT_HTTPHEADER, array("Content-type" => "application/json", "Authorization" => "")); // TODO
+		curl_setopt($call, CURLOPT_HTTPHEADER, array("Content-type" => "application/json", "Authorization" => $authToken));
 
 		$response = curl_exec($call);
+		$status = curl_getinfo($call, CURLINFO_HTTP_CODE);
+		curl_close($call);
+	}
+
+	private function parseTime($stamp)
+	{
+		return date('Y-m-d', $stamp) . "T" . date('H:i:sO', $stamp);
 	}
 }
