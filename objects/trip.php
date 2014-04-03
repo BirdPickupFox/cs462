@@ -31,6 +31,7 @@ class Trip
 
 	private function createTrip()
 	{
+		return "TODO create trip";
 		// TODO
 /*
 		global $db;
@@ -49,7 +50,19 @@ class Trip
 
 	private function createGoogleCalendarEvent()
 	{
-		// TODO
-		// return Google Calendar event id
+		$calendarId = "5hrmsdsdmncm5f0vo3pm37bigo%40group.calendar.google.com";
+		$apiKey = "AIzaSyByo6j6i9-kvorsgcw-v8BV1qPgyMdz5XU";
+
+		$request = "{}"; // TODO
+
+		$call = curl_init();
+		curl_setopt($call, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($call, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($call, CURLOPT_URL, "https://www.googleapis.com/calendar/v3/calendars/$calendarId/events?sendNotifications=false&key=$apiKey");
+		curl_setopt($call, CURLOPT_POST, true);
+		curl_setopt($call, CURLOPT_POSTFIELDS, $request);
+		curl_setopt($call, CURLOPT_HTTPHEADER, array("Content-type" => "application/json", "Authorization" => "")); // TODO
+
+		$response = curl_exec($call);
 	}
 }
