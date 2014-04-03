@@ -1,5 +1,7 @@
 <?php
 
+require_once('../objects/vehicle.php');
+
 // Get current user from cookie
 $currentUser = "";
 if(isset($_COOKIE['currentUser']))
@@ -21,12 +23,11 @@ $description = $_POST['description'];
 
 // Save vehicle in database
 $db = new SQLite3('../db/ride_board.db');
-$query = "INSERT INTO vehicles VALUES(null,{$year},'{$make}','{$model}',{$seatCount},'{$description}','{$currentUser}')";
-$result = $db->exec($query);
+$vehicle = new Vehicle($currentUser, $year, $make, $model, $seatCount, $description);
 
 $statusCode;
 $errorMsg;
-if ($result)
+if ($vehicle->error === NULL)
 {
 	$statusCode = 200;
 }
