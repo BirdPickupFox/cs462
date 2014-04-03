@@ -23,6 +23,10 @@ $description = $_POST['description'];
 $statusCode = 500;
 $errorMsg = "";
 
+//error: attempt to write a readonly database in
+$db = new SQLite3('../db/ride_board.db');
+$db->exec("INSERT INTO vehicles VALUES(null,{$year},'{$make}', '{$model}', {$seatCount}, '${description}', '${currentUser}')");
+
 // Print JSON output
 $output = array(
 	"statusCode" => $statusCode,
