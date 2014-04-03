@@ -60,7 +60,7 @@ class Trip
 		$body['end']['dateTime'] = $this->parseTime($this->end);
 		$body['summary'] = $this->origin . " to " . $this->destination;
 		$request = json_encode($body);
-		$authToken = ""; // TODO
+		$authToken = "ya29.1.AADtN_XYxJ5HtfQMYwq35TtteyyPtXFNmGBjp_mOQj1z98Y-xAmR0MbztNJ8RA";
 
 		$call = curl_init();
 		curl_setopt($call, CURLOPT_SSL_VERIFYPEER, false);
@@ -68,7 +68,7 @@ class Trip
 		curl_setopt($call, CURLOPT_URL, "https://www.googleapis.com/calendar/v3/calendars/$calendarId/events?sendNotifications=false&key=$apiKey");
 		curl_setopt($call, CURLOPT_POST, true);
 		curl_setopt($call, CURLOPT_POSTFIELDS, $request);
-		curl_setopt($call, CURLOPT_HTTPHEADER, array("Content-type" => "application/json", "Authorization" => $authToken));
+		curl_setopt($call, CURLOPT_HTTPHEADER, array("Content-type: application/json", "Authorization: Bearer " . $authToken));
 
 		$response = curl_exec($call);
 		$status = curl_getinfo($call, CURLINFO_HTTP_CODE);
