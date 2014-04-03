@@ -19,13 +19,22 @@ $year = $_POST['year'];
 $seatCount = $_POST['seatCount'];
 $description = $_POST['description'];
 
-// TODO save vehicle in database. If success, set statusCode to 200. If it fails set to 500 and set error message.
-$statusCode = 500;
-$errorMsg = "";
-
-//error: attempt to write a readonly database in; Nate, what am I (Ryan) doing wrong?
+// Save vehicle in database
 $db = new SQLite3('../db/ride_board.db');
-$db->exec("INSERT INTO vehicles VALUES(null,{$year},'{$make}', '{$model}', {$seatCount}, '${description}', '${currentUser}')");
+$query = "INSERT INTO vehicles VALUES(null,{$year},'{$make}','{$model}',{$seatCount},'{$description}','{$currentUser}')";
+$result = $db->exec($query);
+
+$statusCode;
+$errorMsg;
+if ($result)
+{
+	$statusCode = 200;
+}
+else
+{
+	$statusCode = 500;
+	$errorMsg = "Error: failed to insert into table";
+}
 
 // Print JSON output
 $output = array(
