@@ -40,11 +40,10 @@ class Trip
 				VALUES({$this->year},'{$this->make}','{$this->model}',{$this->seatCount},'{$this->description}','{$this->owner}')";
 		$result = $db->exec($query);
 		
-		if($result)
+		if(!$result)
 		{
-			return NULL;
+			$this->error = $db->lastErrorMsg();
 		}
-		return $db->lastErrorMsg();
 */
 	}
 
@@ -81,7 +80,7 @@ class Trip
 		}
 		else
 		{
-			$this->error = "Error in Google Calendar ($status): $response";
+//			$this->error = "Error in Google Calendar ($status): $response"; // Uncomment only if you want errors to be thrown for Google Calendar fails
 		}
 	}
 

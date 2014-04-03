@@ -27,11 +27,8 @@ $price = $_POST['price'];
 
 // Add trip to database
 $trip = new Trip($startDateTime, $endDateTime, $origin, $destination, $vehicleId, $price);
-if($trip->error === NULL)
-{
-	$trip->addUser($currentUser, true);
-}
-else
+$trip->addUser($currentUser, true);
+if($trip->error !== NULL)
 {
 	echo "Error creating trip: " . $trip->error;
 }
