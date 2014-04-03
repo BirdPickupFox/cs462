@@ -206,7 +206,8 @@ function createTrip()
 		},
 		success: function(response)
 		{
-			myAlert("TODO - respond to create trip");
+			$("#tripCalendar").fullCalendar('refetchEvents');
+			$("#newTripEditor").dialog('close');
 		},
 		error: function(response)
 		{
