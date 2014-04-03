@@ -19,9 +19,10 @@ class Trip
 		$this->destination = $destination;
 		$this->vehicleId = $vehicleId;
 		$this->price = $price;
+		$this->error = NULL;
 
-		$this->googleCalendarId = $this->createGoogleCalendarEvent();
-		$this->error = $this->createTrip();
+		$this->createGoogleCalendarEvent();
+		$this->createTrip();
 	}
 
 	public function addUser($userEmail, $requestAccepted)
@@ -31,7 +32,6 @@ class Trip
 
 	private function createTrip()
 	{
-		return "TODO create trip";
 		// TODO
 /*
 		global $db;
@@ -73,6 +73,16 @@ class Trip
 		$response = curl_exec($call);
 		$status = curl_getinfo($call, CURLINFO_HTTP_CODE);
 		curl_close($call);
+
+		if($status == 200)
+		{
+			$json = json_decode($response, true);
+			$this->googleCalendarId = $json['id'];
+		}
+		else
+		{
+			$this->error = "Error in Google Calendar ($status): $response";
+		}
 	}
 
 	private function parseTime($stamp)
