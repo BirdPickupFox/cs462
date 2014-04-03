@@ -25,16 +25,14 @@ CREATE TABLE vehicles
 CREATE TABLE trips
 (
 	trip_id integer primary key autoincrement,
-	start_loc varchar(255) not null,
-	end_loc varchar(255) not null,
-	departure_date varchar(255) not null,
-	departure_time varchar(255) not null,
-	arrival_date varchar(255) not null,
-	arrival_time varchar(255) not null,
-	google_calendar_id varchar(255) not null,
-	vehicle varchar(20),
+	origin_loc varchar(255) not null,
+	destination_loc varchar(255) not null,
+	departure_date_time varchar(255) not null,
+	arrival_date_time varchar(255) not null,
+	vehicle_id varchar(20) not null,
+	google_calendar_id varchar(255),
 	total_cost integer,
-	foreign key (vehicle) references vehicles(vehicle_id)
+	foreign key (vehicle_id) references vehicles(vehicle_id)
 );
 
 CREATE TABLE trip_users
