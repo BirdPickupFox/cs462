@@ -316,7 +316,7 @@ function initTripCalendar()
 		},
 		eventClick: function(calEvent)
 		{
-			// TODO open trip editor (for existing)
+			initTripEditor(calEvent.id);
 		},
 		select: function(startDate, endDate)
 		{
@@ -324,11 +324,11 @@ function initTripCalendar()
 		},
 		eventDrop: function(evt, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view)
 		{
-			updateTrip(evt.id, evt.start, evt.end, revertFunc);
+			updateTrip(evt.id, evt.start, evt.end);
 		},
 		eventResize: function(evt, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view)
 		{
-			updateTrip(evt.id, evt.start, evt.end, revertFunc);
+			updateTrip(evt.id, evt.start, evt.end);
 		},
 		header: {
 			left: '',
@@ -603,6 +603,132 @@ function openNewTripEditor(startDate, endDate)
 }
 
 /*
+ * Gets trip data to open in editor
+ */
+function initTripEditor(tripId)
+{
+	$.ajax({
+		dataType: 'json',
+		type: 'POST',
+		url: 'controller/getTripById.php',
+		data: {tripId: tripId},
+		success: function(response)
+		{
+			openTripEditor(response);
+		},
+		error: function(response)
+		{
+			myAlert("Error retrieving trip: " + response.responseText);
+		},
+	});
+}
+
+/*
+ * Opens up existing trip in editor
+ */
+function openTripEditor(tripObj)
+{
+	$("#tripEditor").dialog({
+		draggable:true,
+		title: "View Trip",
+		height: 600,
+		width: 900,
+		modal: true,
+		resizable: false,
+		open: function()
+		{
+			// Initialize Google Maps
+			currentRoute = null;
+			$("#viewTripMap").html("");
+			$("#viewTripDirectionsPanel").html("");
+			directionsDisplay = new google.maps.DirectionsRenderer();
+			var mapOptions = {
+				center: {lat: 40.24, lng: -111.67},
+				zoom: 6
+			}
+			googleMap = new google.maps.Map(document.getElementById("viewTripMap"), mapOptions);
+			directionsDisplay.setMap(googleMap);
+			directionsDisplay.setPanel(document.getElementById("viewTripDirectionsPanel"));
+
+			// Initialize datepickers
+			$("#tripStartDate").datepicker();
+			$("#tripEndDate").datepicker();
+
+			// Break apart start and end date
+			var startDate = new Date(tripObj.start * 1000);
+			var endDate = new Date(tripObj.end * 1000);
+			var startTime = splitTime(startDate);
+			var endTime = splitTime(endDate);
+
+			// Load vehicle
+			$.ajax({
+				dataType: "json",
+				type: 'POST',
+				url: 'controller/getVehicleById.php',
+				data: {vehicleId: tripObj.vehicleId},
+				success: function(response)
+				{
+					var vehicle = response.year + " " +
+							response.make + " " +
+							response.model + " | " +
+							response.seat_count + " seats | " +
+							response.description;
+					$("#tripVehicle").val(vehicle);
+				},
+				error: function(response)
+				{
+					myAlert("Error getting vehicle: " + response.responseText);
+				},
+			});
+
+			// Prepopulate data
+			$("#tripStartLoc").val(tripObj.origin);
+			$("#tripEndLoc").val(tripObj.destination);
+			$("#tripStartDate").datepicker('setDate', startDate);
+			$("#tripStartTimeHour").val(startTime[0]);
+			$("#tripStartTimeMinute").val(startTime[1]);
+			$("#tripStartTimePeriod").val(startTime[2]);
+			$("#tripEndDate").datepicker('setDate', endDate);
+			$("#tripEndTimeHour").val(endTime[0]);
+			$("#tripEndTimeMinute").val(endTime[1]);
+			$("#tripEndTimePeriod").val(endTime[2]);
+			$("#tripTotalPrice").val(tripObj.price);
+			mapLookup("tripStartLoc", "tripEndLoc");
+		},
+		close: function() {
+			$(this).dialog('destroy');
+		},
+		buttons:
+		[
+			{
+				text: "Update Trip",
+				id: "updateTripBtn",
+				click: function()
+				{
+					var startDate = new Date($("#tripStartDate").val() + " " + 
+							$("#tripStartTimeHour").val() + ":" +
+							$("#tripStartTimeMinute").val() + " " +
+							$("#tripStartTimePeriod").val());
+					var endDate = new Date($("#tripEndDate").val() + " " +
+							$("#tripEndTimeHour").val() + ":" +
+							$("#tripEndTimeMinute").val() + " " +
+							$("#tripEndTimePeriod").val());
+					updateTrip(tripObj.tripId, startDate, endDate, function() { $("#tripEditor").dialog('close'); });
+				},
+			},
+			{
+				text: "View Riders",
+				id: "viewMembersBtn",
+				click: function()
+				{
+					myAlert("TODO view riders");
+				},
+			},
+		],
+	});
+}
+
+/*
  * Open editor to create vehicle
  */ 
 function openVehicleEditor()
@@ -642,8 +768,13 @@ function openVehicleEditor()
 /*
  * Update a trip's start and end time
  */
-function updateTrip(tripId, start, end, revertFunc)
+function updateTrip(tripId, start, end, callback)
 {
+	if(typeof callback == "undefined")
+	{
+		callback = function(){};
+	}
+
 	$.ajax({
 		dataType: 'json',
 		type: 'POST',
@@ -656,6 +787,7 @@ function updateTrip(tripId, start, end, revertFunc)
 		success: function(response)
 		{
 			$("#tripCalendar").fullCalendar('refetchEvents');
+			callback();
 		},
 		error: function(response)
 		{

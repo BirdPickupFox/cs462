@@ -12,7 +12,7 @@ class Trip
 	public $tripId;
 	public $error;
 
-	private $authToken = "ya29.1.AADtN_WBf09isRfb1yTIh6lBYO8Ri-iE4DJfscfp7bNbqcXujYBqCU5doyaauWw";
+	private $authToken = "ya29.1.AADtN_W2i-KNBVtpFA_6P_ZTS0P7Zqt6EAQ4f_XjU8JoLPBnXv2VpxQv2HEE12w";
 	private $calendarId = "5hrmsdsdmncm5f0vo3pm37bigo%40group.calendar.google.com";
 	private $apiKey = "AIzaSyByo6j6i9-kvorsgcw-v8BV1qPgyMdz5XU";
 

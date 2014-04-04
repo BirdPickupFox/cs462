@@ -194,6 +194,120 @@
 	</table>
 </div>
 
+<!-- Trip Editor -->
+<div id='tripEditor' style='display:none'>
+	<table id='tripTable'>
+		<tr>
+			<th>Vehicle</th>
+			<td colspan=3><input type=text id='tripVehicle' class='wide' DISABLED></td>
+		</tr>
+		<tr>
+			<th>Start Location</th>
+			<td><input type=text id='tripStartLoc' DISABLED></td>
+			<th>End Location</th>
+			<td><input type=text id='tripEndLoc' DISABLED></td>
+		</tr>
+		<tr>
+			<th>Departure Date</th>
+			<td><input type=text id='tripStartDate'></td>
+			<th>Departure Time</th>
+			<td>
+				<table>
+					<tr>
+						<td>
+							<select id='tripStartTimeHour'>
+								<?php
+								for($i=1; $i <= 12; $i++)
+								{
+									if($i < 10)
+										echo "<option>0$i</option>";
+									else
+										echo "<option>$i</option>";
+								}
+								?>
+							</select>
+						</td>
+						<td>:</td>
+						<td>
+							<select id='tripStartTimeMinute'>
+								<?php
+								for($i=0; $i <= 60; $i++)
+								{
+									if($i < 10)
+										echo "<option>0$i</option>";
+									else
+										echo "<option>$i</option>";
+								}
+								?>
+							</select>
+						</td>
+						<td>
+							<select id='tripStartTimePeriod'>
+								<option>AM</option>
+								<option>PM</option>
+							</select>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<th>Arrival Date</th>
+			<td><input type=text id='tripEndDate'></td>
+			<th>Arrival Time</th>
+			<td>
+				<table>
+					<tr>
+						<td>
+							<select id='tripEndTimeHour'>
+								<?php
+								for($i=1; $i <= 12; $i++)
+								{
+									if($i < 10)
+										echo "<option>0$i</option>";
+									else
+										echo "<option>$i</option>";
+								}
+								?>
+							</select>
+						</td>
+						<td>:</td>
+						<td>
+							<select id='tripEndTimeMinute'>
+								<?php
+								for($i=0; $i < 60; $i++)
+								{
+									if($i < 10)
+										echo "<option>0$i</option>";
+									else
+										echo "<option>$i</option>";
+								}
+								?>
+							</select>
+						</td>
+						<td>
+							<select id='tripEndTimePeriod'>
+								<option>AM</option>
+								<option>PM</option>
+							</select>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<th>Total Price</th>
+			<td colspan=3><input type=text id='tripTotalPrice' class='wide' DISABLED></td>
+		</tr>
+	</table>
+	<table style='width:100%;height:100%'>
+		<tr>
+			<td style='width:50%'><div id="viewTripMap" style="width:100%;height:100%"></div></td>
+			<td style='width:50%'><div id="viewTripDirectionsPanel" style="width:100%;height:100%"></div></td>
+		</tr>
+	</table>
+</div>
+
 <!-- Vehicle Editor -->
 <div id='vehicleEditor' style='display:none'>
 	<table id='vehicleEditorTable'>
