@@ -322,17 +322,13 @@ function initTripCalendar()
 		{
 			openNewTripEditor(startDate, endDate);
 		},
-		viewDisplay: function(view)
-		{
-			// TODO react to change in view (probably not needed)
-		},
 		eventDrop: function(evt, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view)
 		{
-			// TODO update trip (reflect in Google Calendar)
+			updateTrip(evt.id, evt.start, evt.end, revertFunc);
 		},
 		eventResize: function(evt, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view)
 		{
-			// TODO update trip (reflect in Google Calendar)
+			updateTrip(evt.id, evt.start, evt.end, revertFunc);
 		},
 		header: {
 			left: '',
@@ -640,6 +636,32 @@ function openVehicleEditor()
 				},
 			},
 		],
+	});
+}
+
+/*
+ * Update a trip's start and end time
+ */
+function updateTrip(tripId, start, end, revertFunc)
+{
+	$.ajax({
+		dataType: 'json',
+		type: 'POST',
+		url: 'controller/updateTrip.php',
+		data: {
+			tripId: tripId,
+			startTime: start.getTime() / 1000,
+			endTime: end.getTime() / 1000,
+		},
+		success: function(response)
+		{
+			$("#tripCalendar").fullCalendar('refetchEvents');
+		},
+		error: function(response)
+		{
+			myAlert("Error updating trip: " + response.responseText);
+			$("#tripCalendar").fullCalendar('refetchEvents');
+		},
 	});
 }
 

@@ -11,20 +11,80 @@ class Trip
 	public $googleCalendarId;
 	public $tripId;
 	public $error;
-	
-	public function __construct($start, $end, $origin, $destination, $vehicleId, $price)
-	{
-		$this->start = $start;
-		$this->end = $end;
-		$this->origin = $origin;
-		$this->destination = $destination;
-		$this->vehicleId = $vehicleId;
-		$this->price = $price;
-		$this->tripId = NULL;
-		$this->error = NULL;
 
-		$this->createGoogleCalendarEvent();
-		$this->createTrip();
+	private $authToken = "ya29.1.AADtN_WBf09isRfb1yTIh6lBYO8Ri-iE4DJfscfp7bNbqcXujYBqCU5doyaauWw";
+	private $calendarId = "5hrmsdsdmncm5f0vo3pm37bigo%40group.calendar.google.com";
+	private $apiKey = "AIzaSyByo6j6i9-kvorsgcw-v8BV1qPgyMdz5XU";
+
+	public function __construct()
+	{
+	}
+
+	public static function getFromId($tripId)
+	{
+		global $db;
+
+		$result = $db->querySingle("SELECT * FROM trips WHERE trip_id='$tripId'", TRUE);
+		if($result !== NULL)
+		{
+			$instance = new self();
+			$instance->start = $result['departure_date_time'];
+			$instance->end = $result['arrival_date_time'];
+			$instance->origin = $result['origin_loc'];
+			$instance->destination = $result['destination_loc'];
+			$instance->vehicleId = $result['vehicle_id'];
+			$instance->price = $result['total_cost'];
+			$instance->googleCalendarId = $result['google_calendar_id'];
+			$instance->tripId = $tripId;
+			$instance->error = NULL;
+		}
+		else {
+			$instance->error = "Error finding trip (id: $tripId)";
+		}
+
+		return $instance;
+	}
+	
+	public static function fromData($start, $end, $origin, $destination, $vehicleId, $price)
+	{
+		$instance = new self();
+		$instance->start = $start;
+		$instance->end = $end;
+		$instance->origin = $origin;
+		$instance->destination = $destination;
+		$instance->vehicleId = $vehicleId;
+		$instance->price = $price;
+		$instance->tripId = NULL;
+		$instance->error = NULL;
+
+		$instance->createGoogleCalendarEvent();
+		$instance->createTrip();
+		return $instance;
+	}
+
+	public function getDriver()
+	{
+		global $db;
+
+		return $db->querySingle("SELECT owner FROM vehicles WHERE vehicle_id='{$this->vehicleId}'");
+	}
+
+	public function updateTimes($newStart, $newEnd)
+	{
+		global $db;
+
+		$result = $db->exec("UPDATE trips SET departure_date_time='$newStart', arrival_date_time='$newEnd' WHERE trip_id='{$this->tripId}'");
+
+		if(!$result)
+		{
+			$this->error = "Error updating trip times";
+		}
+		else
+		{
+			$this->start = $newStart;
+			$this->end = $newEnd;
+			$this->updateGoogleCalendarEvent();
+		}
 	}
 
 	public function addUser($userEmail, $requestAccepted)
@@ -66,25 +126,21 @@ class Trip
 
 	private function createGoogleCalendarEvent()
 	{
-		$calendarId = "5hrmsdsdmncm5f0vo3pm37bigo%40group.calendar.google.com";
-		$apiKey = "AIzaSyByo6j6i9-kvorsgcw-v8BV1qPgyMdz5XU";
-
 		$body = array();
 		$body['end'] = array();
 		$body['start'] = array();
 		$body['start']['dateTime'] = $this->parseTime($this->start);
 		$body['end']['dateTime'] = $this->parseTime($this->end);
-		$body['summary'] = $this->origin . " to " . $this->destination;
+		$body['summary'] = "From " . $this->origin . " to " . $this->destination;
 		$request = json_encode($body);
-		$authToken = "ya29.1.AADtN_XYxJ5HtfQMYwq35TtteyyPtXFNmGBjp_mOQj1z98Y-xAmR0MbztNJ8RA";
 
 		$call = curl_init();
 		curl_setopt($call, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($call, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($call, CURLOPT_URL, "https://www.googleapis.com/calendar/v3/calendars/$calendarId/events?sendNotifications=false&key=$apiKey");
+		curl_setopt($call, CURLOPT_URL, "https://www.googleapis.com/calendar/v3/calendars/{$this->calendarId}/events?sendNotifications=false&key={$this->apiKey}");
 		curl_setopt($call, CURLOPT_POST, true);
 		curl_setopt($call, CURLOPT_POSTFIELDS, $request);
-		curl_setopt($call, CURLOPT_HTTPHEADER, array("Content-type: application/json", "Authorization: Bearer " . $authToken));
+		curl_setopt($call, CURLOPT_HTTPHEADER, array("Content-type: application/json", "Authorization: Bearer " . $this->authToken));
 
 		$response = curl_exec($call);
 		$status = curl_getinfo($call, CURLINFO_HTTP_CODE);
@@ -98,6 +154,36 @@ class Trip
 		else
 		{
 //			$this->error = "Error in Google Calendar ($status): $response"; // Uncomment only if you want errors to be thrown for Google Calendar fails
+		}
+	}
+
+	private function updateGoogleCalendarEvent()
+	{
+		$body = array();
+		$body['end'] = array();
+		$body['start'] = array();
+		$body['start']['dateTime'] = $this->parseTime($this->start);
+		$body['end']['dateTime'] = $this->parseTime($this->end);
+		$body['summary'] = "From " . $this->origin . " to " . $this->destination;
+		$request = json_encode($body);
+
+		$url = "https://www.googleapis.com/calendar/v3/calendars/{$this->calendarId}/events/{$this->googleCalendarId}";
+		$call = curl_init();
+		curl_setopt($call, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($call, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($call, CURLOPT_URL, $url);
+		curl_setopt($call, CURLOPT_CUSTOMREQUEST, 'PUT');
+		curl_setopt($call, CURLOPT_POST, 1);
+		curl_setopt($call, CURLOPT_POSTFIELDS, $request);
+		curl_setopt($call, CURLOPT_HTTPHEADER, array("Content-type: application/json", "Authorization: Bearer " . $this->authToken));
+
+		$response = curl_exec($call);
+		$status = curl_getinfo($call, CURLINFO_HTTP_CODE);
+		curl_close($call);
+
+		if($status != 200)
+		{
+			$this->error = "Error in Google Calendar ($status): $response"; // Uncomment only if you want errors to be thrown for Google Calendar fails
 		}
 	}
 
