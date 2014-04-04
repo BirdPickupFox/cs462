@@ -67,11 +67,20 @@ CREATE TABLE notifications
 -- Insert test data
 INSERT INTO users VALUES ('a@a.com', 'a');
 INSERT INTO users VALUES ('b@b.com', 'b');
+INSERT INTO users VALUES ('fox016@gmail.com', 'fox');
+INSERT INTO users VALUES ('rlbird22@gmail.com', 'bird');
+INSERT INTO users VALUES ('pickup21@gmail.com', 'pickup');
 
 INSERT INTO vehicles (year, make, model, seat_count, description, owner)
 	VALUES (2000, 'Toyota', 'Camry', 5, 'Large trunk', 'a@a.com');
 INSERT INTO vehicles (year, make, model, seat_count, description, owner)
 	VALUES (2005, 'Honda', 'Civic', 5, 'Hybrid, 50 mpg', 'b@b.com');
+INSERT INTO vehicles (year, make, model, seat_count, description, owner)
+	VALUES (2005, 'Honda', 'Civic', 5, 'Hybrid, 50 mpg', 'fox016@gmail.com');
+INSERT INTO vehicles (year, make, model, seat_count, description, owner)
+	VALUES (2005, 'Honda', 'Civic', 5, 'Hybrid, 50 mpg', 'rlbird22@gmail.com');
+INSERT INTO vehicles (year, make, model, seat_count, description, owner)
+	VALUES (2005, 'Honda', 'Civic', 5, 'Hybrid, 50 mpg', 'pickup21@gmail.com');
 
 INSERT INTO trips (origin_loc, destination_loc, departure_date_time, arrival_date_time, vehicle_id, total_cost)
 	VALUES ('Provo, UT, USA', 'San Diego, CA, USA', 1396269000, 1396306800, 1, 200);
@@ -81,4 +90,3 @@ INSERT INTO trips (origin_loc, destination_loc, departure_date_time, arrival_dat
 INSERT INTO trip_users VALUES ('a@a.com', 1, 1);
 INSERT INTO trip_users VALUES ('b@b.com', 1, 0);
 INSERT INTO trip_users VALUES ('a@a.com', 2, 1);
-INSERT INTO trip_users VALUES ('b@b.com', 2, 0);
