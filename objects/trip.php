@@ -83,6 +83,7 @@ class Trip
 		{
 			$this->start = $newStart;
 			$this->end = $newEnd;
+			$this->sendUpdateNotification();
 			$this->updateGoogleCalendarEvent();
 		}
 	}
@@ -121,6 +122,23 @@ class Trip
 		else
 		{
 			$this->error = $db->lastErrorMsg();
+		}
+	}
+
+	private function sendUpdateNotification()
+	{
+		global $db;
+		require_once('notification.php');
+
+		$query = "SELECT user_email FROM trip_users WHERE trip_id='{$this->tripId}'";
+
+		$departure = $this->parseHumanTime($this->start);
+		$arrival = $this->parseHumanTime($this->end);
+		$message = "Trip from {$this->origin} to {$this->destination} was updated. Departure will be $departure and arrival will be $arrival.";
+
+		$results = $db->query($query);
+		while ($row = $results->fetchArray()) {
+			$notification = new Notification($row['user_email'], $message);
 		}
 	}
 
@@ -212,5 +230,10 @@ class Trip
 	private function parseTime($stamp)
 	{
 		return date('Y-m-d', $stamp) . "T" . date('H:i:sO', $stamp);
+	}
+
+	private function parseHumanTime($stamp)
+	{
+		return date('m-d-Y', $stamp) . " at " . date('g:i', $stamp);
 	}
 }
