@@ -738,6 +738,13 @@ function openTripEditor(tripObj)
 			$("#tripEndTimePeriod").val(endTime[2]);
 			$("#tripTotalPrice").val(tripObj.price);
 			mapLookup("tripStartLoc", "tripEndLoc");
+
+			// Hide buttons based on if user is the driver or not
+			if(!tripObj.isDriver)
+			{
+				$("#updateTripBtn").hide();
+				$("#cancelTripBtn").hide();
+			}
 		},
 		close: function() {
 			$("#tripStartDate").datepicker('destroy');
@@ -747,7 +754,7 @@ function openTripEditor(tripObj)
 		buttons:
 		[
 			{
-				text: "Update Trip",
+				text: "Save Changes",
 				id: "updateTripBtn",
 				click: function()
 				{
@@ -763,7 +770,15 @@ function openTripEditor(tripObj)
 				},
 			},
 			{
-				text: "View Riders",
+				text: "Cancel Trip",
+				id: "cancelTripBtn",
+				click: function()
+				{
+					deleteTrip(tripObj.tripId);
+				},
+			},
+			{
+				text: "View Riders...",
 				id: "viewMembersBtn",
 				click: function()
 				{
@@ -839,6 +854,30 @@ function updateTrip(tripId, start, end, callback)
 		{
 			myAlert("Error updating trip: " + response.responseText);
 			$("#tripCalendar").fullCalendar('refetchEvents');
+		},
+	});
+}
+
+/*
+ * Cancels a trip
+ */
+function deleteTrip(tripId)
+{
+	$.ajax({
+		dateType: "json",
+		type: 'POST',
+		url: 'controller/deleteTrip.php',
+		data: {
+			tripId: tripId,
+		},
+		success: function(response)
+		{
+			$("#tripEditor").dialog('close');
+			$("#tripCalendar").fullCalendar('refetchEvents');
+		},
+		error: function(response)
+		{
+			myAlert("Error deleting trip: " + response.responseText);
 		},
 	});
 }

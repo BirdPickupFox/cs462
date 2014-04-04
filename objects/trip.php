@@ -83,7 +83,12 @@ class Trip
 		{
 			$this->start = $newStart;
 			$this->end = $newEnd;
-			$this->sendUpdateNotification();
+
+			$departure = $this->parseHumanTime($this->start);
+			$arrival = $this->parseHumanTime($this->end);
+			$message = "Trip from {$this->origin} to {$this->destination} was updated. Departure will be $departure and arrival will be $arrival.";
+			$this->sendNotification($message);
+
 			$this->updateGoogleCalendarEvent();
 		}
 	}
@@ -108,6 +113,24 @@ class Trip
 		}
 	}
 
+	public function cancelTrip()
+	{
+		global $db;
+		$query = "DELETE FROM trips WHERE trip_id='{$this->tripId}'";
+		$result = $db->exec($query);
+		
+		if($result)
+		{
+			$message = "Trip from {$this->origin} to {$this->destination} was cancelled by the driver.";
+			$this->sendNotification($message);
+			$this->deleteGoogleCalendarEvent();
+		}
+		else
+		{
+			$this->error = $db->lastErrorMsg();
+		}
+	}
+
 	private function createTrip()
 	{
 		global $db;
@@ -125,16 +148,12 @@ class Trip
 		}
 	}
 
-	private function sendUpdateNotification()
+	private function sendNotification($message)
 	{
 		global $db;
 		require_once('notification.php');
 
 		$query = "SELECT user_email FROM trip_users WHERE trip_id='{$this->tripId}'";
-
-		$departure = $this->parseHumanTime($this->start);
-		$arrival = $this->parseHumanTime($this->end);
-		$message = "Trip from {$this->origin} to {$this->destination} was updated. Departure will be $departure and arrival will be $arrival.";
 
 		$results = $db->query($query);
 		while ($row = $results->fetchArray()) {
@@ -225,6 +244,11 @@ class Trip
 		{
 			$this->error = "Error in Google Calendar ($status): $response"; // Uncomment only if you want errors to be thrown for Google Calendar fails
 		}
+	}
+
+	private function deleteGoogleCalendarEvent()
+	{
+		// TODO
 	}
 
 	private function parseTime($stamp)
