@@ -10,7 +10,8 @@ class Trip
 	public $price;
 	public $googleCalendarId;
 	public $error;
-
+	
+	// departure time and arrival time are integers, the rest are varchars
 	public function __construct($start, $end, $origin, $destination, $vehicleId, $price)
 	{
 		$this->start = $start;
@@ -32,19 +33,17 @@ class Trip
 
 	private function createTrip()
 	{
-		// TODO
-/*
 		global $db;
 		
-		$query = "INSERT INTO vehicles (year, make, model, seat_count, description, owner)
-				VALUES({$this->year},'{$this->make}','{$this->model}',{$this->seatCount},'{$this->description}','{$this->owner}')";
+		$query = "INSERT INTO trips (origin_loc, destination_loc, departure_date_time, arrival_date_time, vehicle_id, google_calendar_id,total_cost)
+				VALUES('{$this->origin}','{$this->destination}','{$this->start}','{$this->end}','{$this->vehicleId}','{$this->googleCalendarId}','{$this->price}')";
 		$result = $db->exec($query);
 		
 		if(!$result)
 		{
 			$this->error = $db->lastErrorMsg();
 		}
-*/
+
 	}
 
 	private function createGoogleCalendarEvent()
