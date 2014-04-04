@@ -29,6 +29,18 @@ class Trip
 	public function addUser($userEmail, $requestAccepted)
 	{
 		// TODO
+		// We could use some way of storing the generated trip_id in the class
+		// after saving it in createTrip()
+		
+		//Ryan assumes that the google calendar id is unique for each trip
+		$trip_id = $db->querySingle("SELECT trip_id FROM trips WHERE google_calendar_id='$this->googleCalendarId'");
+		if($trip_id != NULL)
+		{
+			//insert into trip_users VALUES("rlbird22@gmail.com",1, 1);
+			$db->exec("INSERT INTO trip_users VALUES('{$userEmail}','{$trip_id}','{$requestAccepted}')");
+			return NULL;
+		}
+		return "Error: This trip has not been stored in the database";
 	}
 
 	private function createTrip()
