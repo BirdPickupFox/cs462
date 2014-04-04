@@ -73,12 +73,15 @@ table#calendarViewSelect td {
 	width:100px;
 	cursor:pointer;
 }
-table#newTripTable, table#vehicleEditorTable {
+table#newTripTable, table#tripTable, table#vehicleEditorTable {
 	width:100%;
 }
 #vehicleEditorTable th {
 	text-align:right;
 	width:100px;
+}
+#newTripTable th, #tripTable th {
+	text-align:right;
 }
 #tripCalendar {
 	margin:20px;

@@ -91,3 +91,9 @@ INSERT INTO trips (origin_loc, destination_loc, departure_date_time, arrival_dat
 INSERT INTO trip_users VALUES ('a@a.com', 1, 1);
 INSERT INTO trip_users VALUES ('b@b.com', 1, 0);
 INSERT INTO trip_users VALUES ('a@a.com', 2, 1);
+
+INSERT INTO notifications VALUES ('a@a.com', 'Test Notification', 1396645000);
+INSERT INTO notifications VALUES ('b@b.com', 'Test Notification', 1396645000);
+INSERT INTO notifications VALUES ('fox016@gmail.com', 'Test Notification', 1396645000);
+INSERT INTO notifications VALUES ('rlbird22@gmail.com', 'Test Notification', 1396645000);
+INSERT INTO notifications VALUES ('pickup21@gmail.com', 'Test Notification', 1396645000);

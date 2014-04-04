@@ -625,6 +625,8 @@ function openNewTripEditor(startDate, endDate)
 			$("#totalPrice").val('');
 		},
 		close: function() {
+			$("#startDate").datepicker('destroy');
+			$("#endDate").datepicker('destroy');
 			$(this).dialog('destroy');
 		},
 		buttons:
@@ -738,6 +740,8 @@ function openTripEditor(tripObj)
 			mapLookup("tripStartLoc", "tripEndLoc");
 		},
 		close: function() {
+			$("#tripStartDate").datepicker('destroy');
+			$("#tripEndDate").datepicker('destroy');
 			$(this).dialog('destroy');
 		},
 		buttons:
