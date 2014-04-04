@@ -149,12 +149,33 @@ class Trip
 		if($status == 200)
 		{
 			$json = json_decode($response, true);
-			$this->googleCalendarId = $json['id'];
+			if(isset($json['id']))
+				$this->googleCalendarId = $json['id'];
 		}
 		else
 		{
 //			$this->error = "Error in Google Calendar ($status): $response"; // Uncomment only if you want errors to be thrown for Google Calendar fails
 		}
+	}
+
+	private function getGoogleUpdateSequence()
+	{
+		$url = "https://www.googleapis.com/calendar/v3/calendars/{$this->calendarId}/events/{$this->googleCalendarId}";
+		$call = curl_init();
+		curl_setopt($call, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($call, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($call, CURLOPT_URL, $url);
+		curl_setopt($call, CURLOPT_HTTPGET, true);
+		curl_setopt($call, CURLOPT_HTTPHEADER, array("Authorization: Bearer " . $this->authToken));
+
+		$response = curl_exec($call);
+		$status = curl_getinfo($call, CURLINFO_HTTP_CODE);
+		curl_close($call);
+
+		$json = json_decode($response, true);
+		if(isset($json['sequence']))
+			return $json['sequence'];
+		return 0;
 	}
 
 	private function updateGoogleCalendarEvent()
@@ -165,6 +186,7 @@ class Trip
 		$body['start']['dateTime'] = $this->parseTime($this->start);
 		$body['end']['dateTime'] = $this->parseTime($this->end);
 		$body['summary'] = "From " . $this->origin . " to " . $this->destination;
+		$body['sequence'] = $this->getGoogleUpdateSequence();
 		$request = json_encode($body);
 
 		$url = "https://www.googleapis.com/calendar/v3/calendars/{$this->calendarId}/events/{$this->googleCalendarId}";
