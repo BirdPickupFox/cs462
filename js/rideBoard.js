@@ -8,6 +8,7 @@ var directionsService = new google.maps.DirectionsService(); // Google Maps dire
 var currentRoute = null; 	// Google Maps most recently returned route object
 
 var vehicleTable = null; 	// Datatable table for vehicles
+var notificationTable = null;	// Datatable table for notifications
 // End Globals
 
 /*
@@ -285,6 +286,7 @@ function showMyNotifications()
 {
 	selectNavigation("notifyNav");
 	$("#dynamicContent").html($("#notifyPage").html());
+	initNotificationTable();
 }
 
 /*
@@ -387,6 +389,46 @@ function initVehicleTable()
 				error: function(response)
 				{
 					myAlert("Error loading vehicle table: " + response.responseText);
+				},
+			});
+		},
+	});
+}
+
+/*
+ * Initializes notification table
+ */
+function initNotificationTable()
+{
+	notificationTable = $("#notificationTable").dataTable({
+		"aoColumnDefs": [
+			{"bSortable": false, "sWidth": "20%", "aTargets":[0]}, // Date
+			{"bSortable": false, "sWidth": "80%", "aTargets":[1]}, // Notification
+		],
+		"bAutoWidth": false,
+		"bLengthChange": false,
+		"bPaginate": false,
+		"bProcessing": false,
+		"bServerSide": true,
+		"oLanguage": {
+			"sEmptyTable": "You have no notifications",
+		},
+		"sAjaxSource": "controller/getMyNotifications.php",
+		"sDom": "<t>",
+		"fnServerData": function(sSource, aoData, fnCallback, oSettings)
+		{
+			oSettings.jqXHR = $.ajax({
+				dataType: "json",
+				type: "POST",
+				url: sSource,
+				data: aoData,
+				success: function(response)
+				{
+					fnCallback(response);
+				},
+				error: function(response)
+				{
+					myAlert("Error loading notification table: " + response.responseText);
 				},
 			});
 		},

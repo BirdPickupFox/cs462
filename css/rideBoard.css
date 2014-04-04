@@ -90,14 +90,19 @@ table#newTripTable, table#vehicleEditorTable {
 }
 #vehicleTable {
 	margin:0px 20px;
+	max-width:1000px;
 }
-#vehicleTable thead th {
+#vehicleTable thead th, #notificationTable thead th {
 	padding:5px 0px 5px 10px;
 	font-weight:normal;
 	font-style:italic;
 	font-size:12pt;
 	text-align:left;
 	background:#EEE;
+}
+#notificationTable {
+	margin:20px;
+	max-width:1000px;
 }
 #tableFoot {
 	margin:0px 20px;

@@ -14,11 +14,6 @@ class Notification
 		$this->createNotification();
 	}
 
-	public static function getAllForUser($email)
-	{
-		// TODO
-	}
-
 	private function sendEmail()
 	{
 		@mail($this->email, "Trip Update Notification", $this->text, "From: catch_ride_no_reply@byu.edu\r\n\r\n");
@@ -26,6 +21,8 @@ class Notification
 
 	private function createNotification()
 	{
-		// TODO
+		global $db;
+		$created = time();
+		$db->exec("INSERT INTO notifications VALUES ('{$this->email}', '{$this->text}', $created)");
 	}
 }

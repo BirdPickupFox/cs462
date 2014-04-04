@@ -61,6 +61,7 @@ CREATE TABLE notifications
 (
 	user_email varchar(255) not null,
 	text varchar(4000) not null,
+	created_time integer not null,
 	foreign key (user_email) references users(email)
 );
 

@@ -59,7 +59,16 @@
 
 <!-- My Notifications Page -->
 <div id='notifyPage' style='display:none'>
-	<div>This is the notification page</div>
+	<table id='notificationTable'>
+		<thead>
+			<tr>
+				<th>Date/Time</th>
+				<th>Notification</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
 </div>
 
 <!-- Registration Editor -->
