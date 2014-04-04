@@ -9,9 +9,9 @@ class Trip
 	public $vehicleId;
 	public $price;
 	public $googleCalendarId;
+	public $tripId;
 	public $error;
 	
-	// departure time and arrival time are integers, the rest are varchars
 	public function __construct($start, $end, $origin, $destination, $vehicleId, $price)
 	{
 		$this->start = $start;
@@ -20,6 +20,7 @@ class Trip
 		$this->destination = $destination;
 		$this->vehicleId = $vehicleId;
 		$this->price = $price;
+		$this->tripId = NULL;
 		$this->error = NULL;
 
 		$this->createGoogleCalendarEvent();
@@ -28,35 +29,39 @@ class Trip
 
 	public function addUser($userEmail, $requestAccepted)
 	{
-		// TODO
-		// We could use some way of storing the generated trip_id in the class
-		// after saving it in createTrip()
-		
-		//Ryan assumes that the google calendar id is unique for each trip
-		$trip_id = $db->querySingle("SELECT trip_id FROM trips WHERE google_calendar_id='$this->googleCalendarId'");
-		if($trip_id != NULL)
+		global $db;
+
+		$accepted = $requestAccepted ? 1 : 0;
+
+		if($this->tripId != NULL)
 		{
-			//insert into trip_users VALUES("rlbird22@gmail.com",1, 1);
-			$db->exec("INSERT INTO trip_users VALUES('{$userEmail}','{$trip_id}','{$requestAccepted}')");
-			return NULL;
+			$result = $db->exec("INSERT INTO trip_users VALUES('{$userEmail}','{$this->tripId}','{$accepted}')");
+			if(!$result)
+			{
+				$this->error =  "Error: Failed to add user $userEmail to trip";
+			}
 		}
-		return "Error: This trip has not been stored in the database";
+		else
+		{
+			$this->error =  "Error: This trip has not been stored in the database";
+		}
 	}
 
 	private function createTrip()
 	{
 		global $db;
-		
-		//do we need to add creator of this trip into trip_users?
 		$query = "INSERT INTO trips (origin_loc, destination_loc, departure_date_time, arrival_date_time, vehicle_id, google_calendar_id,total_cost)
 				VALUES('{$this->origin}','{$this->destination}','{$this->start}','{$this->end}','{$this->vehicleId}','{$this->googleCalendarId}','{$this->price}')";
 		$result = $db->exec($query);
 		
-		if(!$result)
+		if($result)
+		{
+			$this->tripId = $db->lastInsertRowID();
+		}
+		else
 		{
 			$this->error = $db->lastErrorMsg();
 		}
-
 	}
 
 	private function createGoogleCalendarEvent()

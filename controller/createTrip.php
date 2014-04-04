@@ -32,3 +32,7 @@ if($trip->error !== NULL)
 {
 	echo "Error creating trip: " . $trip->error;
 }
+
+// Echo output
+$output = array("tripId" => $trip->tripId);
+echo json_encode($output);

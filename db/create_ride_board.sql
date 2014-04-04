@@ -63,3 +63,22 @@ CREATE TABLE notifications
 	text varchar(4000) not null,
 	foreign key (user_email) references users(email)
 );
+
+-- Insert test data
+INSERT INTO users VALUES ('a@a.com', 'a');
+INSERT INTO users VALUES ('b@b.com', 'b');
+
+INSERT INTO vehicles (year, make, model, seat_count, description, owner)
+	VALUES (2000, 'Toyota', 'Camry', 5, 'Large trunk', 'a@a.com');
+INSERT INTO vehicles (year, make, model, seat_count, description, owner)
+	VALUES (2005, 'Honda', 'Civic', 5, 'Hybrid, 50 mpg', 'b@b.com');
+
+INSERT INTO trips (origin_loc, destination_loc, departure_date_time, arrival_date_time, vehicle_id, total_cost)
+	VALUES ('Provo, UT, USA', 'San Diego, CA, USA', 1396269000, 1396306800, 1, 200);
+INSERT INTO trips (origin_loc, destination_loc, departure_date_time, arrival_date_time, vehicle_id, total_cost)
+	VALUES ('San Deigo, CA, USA', 'Provo, UT, USA', 1396533600, 1396580400, 1, 200);
+
+INSERT INTO trip_users VALUES ('a@a.com', 1, 1);
+INSERT INTO trip_users VALUES ('b@b.com', 1, 0);
+INSERT INTO trip_users VALUES ('a@a.com', 2, 1);
+INSERT INTO trip_users VALUES ('b@b.com', 2, 0);
