@@ -14,20 +14,44 @@ $onlyMine = $_POST['onlyMine'];
 $origin = $_POST['origin'];
 $destination = $_POST['destination'];
 
-// TODO Query database for trips and replace this test data with real data
-$output = array(
-	array(
-		'id'=> "testid", // unique trip id
-		'title'=> "Test Trip", // title ("[origin] to [destination]" or something like that)
-		'allDay'=> false,
-		'start'=> "04/04/2014 10:30 AM", // start datetime
-		'end'=> "04/04/2014 11:30 PM", // end datetime
-		'color'=> "#F6F68D",
-		'className'=> "trip_item",
-		'editable'=> true,
-		'textColor'=> "black",
-	)
-);
+//select * from trips where origin_loc="Provo, UT" and destination_loc="San Diego, CA"
+global $db;
+//here are the results for origin and destination, do we want to search
+//for the exact date range? Or add 1 - 3 day leniance on each end?
+$result = $db->query("SELECT * FROM trips WHERE origin_loc='{$origin}' and destination_loc='{$destination}'");
+$output = array();
+
+//I don't know the exact syntax, Nate, could you test to see if this is correct?
+//TODO: double check this syntax
+while ($row = $results->fetchArray()) {
+    array_push($output,
+    	array(
+    		'id' => $row['trip_id'],
+    		'title' => 'Need Trip Name Here',
+    		'allDay' => false,
+    		'start' => $row['departure_date_time'],
+    		'end' => $row['arrival_date_time'],
+    		'color' => "#F6F68D",
+    		'className' => "trip_item",
+    		'editable' => true,
+    		'textColor' => "black"
+    	)
+    );
+}
+
+//$output = array(
+//	array(
+//		'id'=> "testid", // unique trip id
+//		'title'=> "Test Trip", // title ("[origin] to [destination]" or something like that)
+//		'allDay'=> false,
+//		'start'=> "04/04/2014 10:30 AM", // start datetime
+//		'end'=> "04/04/2014 11:30 PM", // end datetime
+//		'color'=> "#F6F68D",
+//		'className'=> "trip_item",
+//		'editable'=> true,
+//		'textColor'=> "black",
+//	)
+//);
 echo json_encode($output);
 
 /*

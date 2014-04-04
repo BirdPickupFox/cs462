@@ -47,6 +47,7 @@ class Trip
 	{
 		global $db;
 		
+		//do we need to add creator of this trip into trip_users?
 		$query = "INSERT INTO trips (origin_loc, destination_loc, departure_date_time, arrival_date_time, vehicle_id, google_calendar_id,total_cost)
 				VALUES('{$this->origin}','{$this->destination}','{$this->start}','{$this->end}','{$this->vehicleId}','{$this->googleCalendarId}','{$this->price}')";
 		$result = $db->exec($query);
