@@ -101,6 +101,7 @@ class Trip
 
 		if($this->tripId != NULL)
 		{
+			//TODO: check number of seats and number available
 			$result = $db->exec("INSERT INTO trip_users VALUES('{$userEmail}','{$this->tripId}','{$accepted}')");
 			if(!$result)
 			{
@@ -111,6 +112,28 @@ class Trip
 		{
 			$this->error =  "Error: This trip has not been stored in the database";
 		}
+	}
+	
+	//use this to count how many people are in a trip already
+	//so that we may limit the users that are in the trip
+	public function getHeadCount()
+	{
+		global $db;
+		
+		if($this->tripId != NULL)
+		{
+			//SELECT COUNT(*) as count FROM vehicles WHERE make="Honda";
+			$result = $db->exec("SELECT COUNT(*) as count from trip_users WHERE trip_id='{$this->tripId}'");
+			if(!$result)
+			{
+				$this->error =  "Error: Invalid tripId: {$this->tripId}";
+			}
+			else {
+				return $result;
+			}
+		}
+		
+		return 0;
 	}
 
 	public function cancelTrip()
