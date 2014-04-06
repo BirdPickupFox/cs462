@@ -123,6 +123,7 @@ class Trip
 		if($this->tripId != NULL)
 		{
 			//SELECT COUNT(*) as count FROM vehicles WHERE make="Honda";
+			//do we also want to include: 'and request_accepted = 1'?
 			$result = $db->exec("SELECT COUNT(*) as count from trip_users WHERE trip_id='{$this->tripId}'");
 			if(!$result)
 			{
