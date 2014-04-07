@@ -343,6 +343,18 @@
 	</table>
 </div>
 
+<!-- Trip Member Editor -->
+<div id='tripMemberEditor' style='display:none'>
+	<table id='tripMemberTable'>
+		<thead>
+			<th>Email</th>
+			<th>Accepted</th>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+</div>
+
 <!-- Universal Alert Box -->
 <div id='alertBox' style='display:none'>
 </div>

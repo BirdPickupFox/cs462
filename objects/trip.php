@@ -14,7 +14,7 @@ class Trip
 	public $tripId;
 	public $error;
 
-	private $authToken = "ya29.1.AADtN_W2i-KNBVtpFA_6P_ZTS0P7Zqt6EAQ4f_XjU8JoLPBnXv2VpxQv2HEE12w";
+	private $authToken = "ya29.1.AADtN_XkiM0_KLjaHEAmrpq-vy4AdWZU6boUTncqkAuUlvz0lTfFh8_xXHSghXM";
 	private $calendarId = "5hrmsdsdmncm5f0vo3pm37bigo%40group.calendar.google.com";
 	private $apiKey = "AIzaSyByo6j6i9-kvorsgcw-v8BV1qPgyMdz5XU";
 
@@ -113,7 +113,7 @@ class Trip
 				return;
 			}
 
-			$isTripUser = $db->querySingle("SELECT COUNT(*) FROM trip_users WHERE user_email='$userEmail' AND trip_id='{$this->tripId}'");
+			$isTripUser = $db->querySingle("SELECT COUNT(*) as count FROM trip_users WHERE user_email='$userEmail' AND trip_id='{$this->tripId}'");
 
 			// If user is not already associated with trip, add user to trip
 			if($isTripUser == 0)
@@ -162,6 +162,13 @@ class Trip
 		}
 		
 		return 0;
+	}
+
+	public function getMembers()
+	{
+		global $db;
+
+		return $db->query("SELECT * FROM trip_users WHERE trip_id='{$this->tripId}'");
 	}
 
 	public function getVehicle()
@@ -298,13 +305,28 @@ class Trip
 
 		if($status != 200)
 		{
-			$this->error = "Error in Google Calendar ($status): $response"; // Uncomment only if you want errors to be thrown for Google Calendar fails
+//			$this->error = "Error in Google Calendar ($status): $response"; // Uncomment only if you want errors to be thrown for Google Calendar fails
 		}
 	}
 
 	private function deleteGoogleCalendarEvent()
 	{
-		// TODO
+		$url = "https://www.googleapis.com/calendar/v3/calendars/{$this->calendarId}/events/{$this->googleCalendarId}";
+		$call = curl_init();
+		curl_setopt($call, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($call, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($call, CURLOPT_URL, $url);
+		curl_setopt($call, CURLOPT_CUSTOMREQUEST, 'DELETE');
+		curl_setopt($call, CURLOPT_HTTPHEADER, array("Authorization: Bearer " . $this->authToken));
+
+		$response = curl_exec($call);
+		$status = curl_getinfo($call, CURLINFO_HTTP_CODE);
+		curl_close($call);
+
+		if($status != 200)
+		{
+//			$this->error = "Error in Google Calendar ($status): $response"; // Uncomment only if you want errors to be thrown for Google Calendar fails
+		}
 	}
 
 	private function parseTime($stamp)

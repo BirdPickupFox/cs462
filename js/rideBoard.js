@@ -9,6 +9,7 @@ var currentRoute = null; 	// Google Maps most recently returned route object
 
 var vehicleTable = null; 	// Datatable table for vehicles
 var notificationTable = null;	// Datatable table for notifications
+var tripMemberTable = null;	// Datatable table for tirp members
 // End Globals
 
 /*
@@ -389,6 +390,60 @@ function initVehicleTable()
 				error: function(response)
 				{
 					myAlert("Error loading vehicle table: " + response.responseText);
+				},
+			});
+		},
+	});
+}
+
+/*
+ * Loads trip members into trip member table
+ *
+ * @param tripId
+ * @param canEdit - boolean, true iff user can edit trip member table accepted boxes
+ */
+function initTripMemberTable(tripId, canEdit)
+{
+	tripMemberTable = $("#tripMemberTable").dataTable({
+		"aoColumnDefs": [
+			{"bSortable": false, "sWidth": "70%", "aTargets":[0]}, // User email
+			{"bSortable": false, "sWidth": "30%", "aTargets":[1]}, // Accepted
+		],
+		"bAutoWidth": false,
+		"bLengthChange": false,
+		"bPaginate": false,
+		"bProcessing": false,
+		"bServerSide": true,
+		"oLanguage": {
+			"sEmptyTable": "Error retrieving members",
+		},
+		"sAjaxSource": "controller/getTripUsers.php",
+		"sDom": "<t>",
+		"fnServerData": function(sSource, aoData, fnCallback, oSettings)
+		{
+			var tripData = new Object();
+			tripData.name = 'tripId';
+			tripData.value = tripId;
+
+			var editData = new Object();
+			editData.name = 'canEdit';
+			editData.value = canEdit ? 'true' : 'false';
+
+			var extraDataArray = [tripData, editData];
+			var dataArray = aoData.concat(extraDataArray);
+
+			oSettings.jqXHR = $.ajax({
+				dataType: "json",
+				type: "POST",
+				url: sSource,
+				data: dataArray,
+				success: function(response)
+				{
+					fnCallback(response);
+				},
+				error: function(response)
+				{
+					myAlert("Error loading trip member table: " + response.responseText);
 				},
 			});
 		},
@@ -782,7 +837,69 @@ function openTripEditor(tripObj)
 				id: "viewMembersBtn",
 				click: function()
 				{
-					myAlert("TODO view riders");
+					openTripMemberEditor(tripObj.tripId, tripObj.isDriver);
+				},
+			},
+		],
+	});
+}
+
+/*
+ * Opens join trip editor
+ *
+ * @param tripId
+ * @param canEdit - boolean, true iff user can edit trip member table accepted boxes
+ */
+function openTripMemberEditor(tripId, canEdit)
+{
+	$("#tripMemberEditor").dialog({
+		draggable:true,
+		title: "View Trip Members",
+		height: 400,
+		width: 700,
+		modal: true,
+		resizable: false,
+		open: function()
+		{
+			if(canEdit)
+			{
+				$("#joinTripBtn").hide();
+				$("#leaveTripBtn").hide();
+			}
+			else
+			{
+				$("#saveTripMembersBtn").hide();
+			}
+
+			initTripMemberTable(tripId, canEdit);
+		},
+		close: function()
+		{
+			tripMemberTable.fnDestroy();
+		},
+		buttons: [
+			{
+				text: "Join Trip",
+				id: "joinTripBtn",
+				click: function()
+				{
+					myAlert("TODO join trip");
+				},
+			},
+			{
+				text: "Leave Trip",
+				id: "leaveTripBtn",
+				click: function()
+				{
+					myAlert("TODO leave trip");
+				},
+			},
+			{
+				text: "Save and Send Notifications",
+				id: "saveTripMembersBtn",
+				click: function()
+				{
+					myAlert("TODO save trip members");
 				},
 			},
 		],

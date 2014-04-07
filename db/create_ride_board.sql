@@ -84,7 +84,7 @@ INSERT INTO vehicles (year, make, model, seat_count, description, owner)
 	VALUES (2005, 'Honda', 'Civic', 5, 'Hybrid, 50 mpg', 'pickup21@gmail.com');
 
 INSERT INTO trips (origin_loc, destination_loc, departure_date_time, arrival_date_time, vehicle_id, total_cost)
-	VALUES ('Provo, UT, USA', 'San Diego, CA, USA', 1396869000, 1396906800, 1, 200);
+	VALUES ('Provo, UT, USA', 'San Diego, CA, USA', 1396869000, 1396915800, 1, 200);
 INSERT INTO trips (origin_loc, destination_loc, departure_date_time, arrival_date_time, vehicle_id, total_cost)
 	VALUES ('San Deigo, CA, USA', 'Provo, UT, USA', 1397133600, 1397180400, 1, 200);
 
