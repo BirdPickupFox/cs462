@@ -105,7 +105,8 @@ class Trip
 		{
 			// Make sure there is room in vehicle
 			$headCount = $this->getHeadCount();
-			$seats = $this->getVehicle()['seat_count'];
+			$seats = $this->getVehicle();
+			$seats = $seats['seat_count'];
 			if($headCount >= $seats)
 			{
 				$this->error = "Error: No room in trip, could not add $userEmail to trip";
@@ -136,7 +137,9 @@ class Trip
 				// Send notification if request was accepted
 				if($requestAccepted)
 				{
-					$message = "You have been accepted into a trip!";
+					$departure = $this->parseHumanTime($this->start);
+					$arrival = $this->parseHumanTime($this->end);
+					$message = "You have been accepted into a trip from {$this->origin} to {$this->destination}. Departure will be $departure and arrival will be $arrival.";
 					$notification = new Notification($userEmail, $message);
 				}
 			}
