@@ -16,7 +16,7 @@ while($row = $users->fetchArray())
 	$disabled = "DISABLED";
 	if($_POST['canEdit'] == 'true' && $email != $driver)
 		$disabled = "";
-	$checkBox = "<input type='checkbox' id='' $checked $disabled>";
+	$checkBox = "<input type='checkbox' class='tripMemberBox' id='tripMemberBox_$email' $checked $disabled>";
 
 	$userData[] = array(
 		$email,

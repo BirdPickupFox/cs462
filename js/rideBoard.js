@@ -876,6 +876,7 @@ function openTripMemberEditor(tripId, canEdit)
 		close: function()
 		{
 			tripMemberTable.fnDestroy();
+			$(this).dialog('destroy');
 		},
 		buttons: [
 			{
@@ -899,7 +900,7 @@ function openTripMemberEditor(tripId, canEdit)
 				id: "saveTripMembersBtn",
 				click: function()
 				{
-					myAlert("TODO save trip members");
+					saveTripMembers(tripId);
 				},
 			},
 		],
@@ -1041,6 +1042,43 @@ function leaveTrip(tripId)
 		error: function(response)
 		{
 			myAlert("Error leaving trip: " + response.responseText);
+		},
+	});
+}
+
+/*
+ * Save members of a trip (driver only) and send notifications
+ */
+function saveTripMembers(tripId)
+{
+	var memberList = '[';
+	var i = 0;
+	$(".tripMemberBox").each(function()
+	{
+		var email = $(this).attr('id').replace("tripMemberBox_", "");
+		var accepted = $(this).prop("checked") ? 'true' : 'false';
+		if(i != 0)
+			memberList += ",";
+		memberList += '{"email": "' + email + '", "accepted": "' + accepted + '"}';
+		i++;
+	});
+	memberList += "]";
+
+	$.ajax({
+		dataType: "json",
+		type: "POST",
+		url: "controller/saveTripMembers.php",
+		data: {
+			tripId: tripId,	
+			members: memberList,
+		},
+		success: function(response)
+		{
+		 	$("#tripMemberEditor").dialog('close');
+		},
+		error: function(response)
+		{
+			myAlert("Error saving trip members: " + response.responseText);
 		},
 	});
 }
