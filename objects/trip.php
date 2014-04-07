@@ -14,7 +14,7 @@ class Trip
 	public $tripId;
 	public $error;
 
-	private $authToken = "ya29.1.AADtN_X5gwbtI44nj2RSBArGO8iWpMulJRiQhQhu3RA990FAmc4DQIWsx7teY4M";
+	private $authToken = "ya29.1.AADtN_UpQPuOz19JlGnQ_HCkliTg4Y63_CEgx2eqITEi2zUpYW44hmk33hCv0K0";
 	private $calendarId = "5hrmsdsdmncm5f0vo3pm37bigo%40group.calendar.google.com";
 	private $apiKey = "AIzaSyByo6j6i9-kvorsgcw-v8BV1qPgyMdz5XU";
 
@@ -71,7 +71,7 @@ class Trip
 		return $db->querySingle("SELECT owner FROM vehicles WHERE vehicle_id='{$this->vehicleId}'");
 	}
 
-	public function updateTimes($newStart, $newEnd)
+	public function updateTimes($newStart, $newEnd, $pushToGoogle)
 	{
 		global $db;
 
@@ -91,7 +91,10 @@ class Trip
 			$message = "Trip from {$this->origin} to {$this->destination} was updated. Departure will be $departure and arrival will be $arrival.";
 			$this->sendNotification($message);
 
-			$this->updateGoogleCalendarEvent();
+			if($pushToGoogle)
+			{
+				$this->updateGoogleCalendarEvent();
+			}
 		}
 	}
 
@@ -275,6 +278,15 @@ class Trip
 
 	private function getGoogleUpdateSequence()
 	{
+		$response = $this->getGoogleEvent();
+		$json = json_decode($response, true);
+		if(isset($json['sequence']))
+			return $json['sequence'];
+		return 0;
+	}
+
+	public function getGoogleEvent()
+	{
 		$url = "https://www.googleapis.com/calendar/v3/calendars/{$this->calendarId}/events/{$this->googleCalendarId}";
 		$call = curl_init();
 		curl_setopt($call, CURLOPT_SSL_VERIFYPEER, false);
@@ -287,10 +299,7 @@ class Trip
 		$status = curl_getinfo($call, CURLINFO_HTTP_CODE);
 		curl_close($call);
 
-		$json = json_decode($response, true);
-		if(isset($json['sequence']))
-			return $json['sequence'];
-		return 0;
+		return $response;
 	}
 
 	private function updateGoogleCalendarEvent()

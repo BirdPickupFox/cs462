@@ -35,12 +35,9 @@ if(isset($_GET['code']))
 		echo json_encode($callInfo) . "<br>";
 		die;
 	}
-	$token = $json['access_token'];
-	echo "Token: $token";
-}
-if(isset($_GET['watch']))
-{
-	$authToken = "ya29.1.AADtN_X5gwbtI44nj2RSBArGO8iWpMulJRiQhQhu3RA990FAmc4DQIWsx7teY4M";
+	$authToken = $json['access_token'];
+	echo "Token: $authToken";
+
 	$calendarId = "5hrmsdsdmncm5f0vo3pm37bigo%40group.calendar.google.com";
 	$url = "https://www.googleapis.com/calendar/v3/calendars/$calendarId/events/watch";
 
@@ -62,6 +59,7 @@ if(isset($_GET['watch']))
 	$status = curl_getinfo($call, CURLINFO_HTTP_CODE);
 	curl_close($call);
 
+	echo "<br><br>";
 	echo $response;
 }
 

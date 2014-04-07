@@ -34,7 +34,7 @@ if($driver != $currentUser)
 }
 
 // Update trip
-$trip->updateTimes($startTime, $endTime);
+$trip->updateTimes($startTime, $endTime, true);
 
 // Echo output
 $output = array("error" => $trip->error);
