@@ -23,6 +23,7 @@ $output = array();
 while ($row = $result->fetchArray()) {
 	$output[] = array(
     		'id' => $row['trip_id'],
+		'googleId' => $row['google_calendar_id'],
     		'title' => "From {$row['origin_loc']} to {$row['destination_loc']}",
     		'allDay' => false,
     		'start' => $row['departure_date_time'],

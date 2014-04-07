@@ -38,6 +38,32 @@ if(isset($_GET['code']))
 	$token = $json['access_token'];
 	echo "Token: $token";
 }
+if(isset($_GET['watch']))
+{
+	$authToken = "ya29.1.AADtN_X5gwbtI44nj2RSBArGO8iWpMulJRiQhQhu3RA990FAmc4DQIWsx7teY4M";
+	$calendarId = "5hrmsdsdmncm5f0vo3pm37bigo%40group.calendar.google.com";
+	$url = "https://www.googleapis.com/calendar/v3/calendars/$calendarId/events/watch";
+
+	$body = array();
+	$body['id'] = "2902385-aacdegge-232543-000431";
+	$body['type'] = "web_hook";
+	$body['address'] = "https://saasta-dev.byu.edu/noauth/test/cs462/controller/notifications.php";
+	$request = json_encode($body);
+
+	$call = curl_init();
+	curl_setopt($call, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($call, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($call, CURLOPT_URL, $url);
+	curl_setopt($call, CURLOPT_POST, true);
+	curl_setopt($call, CURLOPT_POSTFIELDS, $request);
+	curl_setopt($call, CURLOPT_HTTPHEADER, array("Content-type: application/json", "Authorization: Bearer " . $authToken));
+
+	$response = curl_exec($call);
+	$status = curl_getinfo($call, CURLINFO_HTTP_CODE);
+	curl_close($call);
+
+	echo $response;
+}
 
 ?>
 <!DOCTYPE html>
