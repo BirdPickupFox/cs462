@@ -75,6 +75,12 @@ class Trip
 	{
 		global $db;
 
+		// If this isn't an actual update, just forget it
+		if($this->start == $newStart && $this->end == $newEnd)
+		{
+			return;
+		}
+
 		$result = $db->exec("UPDATE trips SET departure_date_time='$newStart', arrival_date_time='$newEnd' WHERE trip_id='{$this->tripId}'");
 
 		if(!$result)
