@@ -1,5 +1,7 @@
 <?php
 
+require_once('notification.php');
+
 class Trip
 {
 	public $start;
@@ -101,11 +103,42 @@ class Trip
 
 		if($this->tripId != NULL)
 		{
-			//TODO: check number of seats and number available
-			$result = $db->exec("INSERT INTO trip_users VALUES('{$userEmail}','{$this->tripId}','{$accepted}')");
+			// Make sure there is room in vehicle
+			$headCount = $this->getHeadCount();
+			$seats = $this->getVehicle()['seat_count'];
+			if($headCount >= $seats)
+			{
+				$this->error = "Error: No room in trip, could not add $userEmail to trip";
+				return;
+			}
+
+			$isTripUser = $db->querySingle("SELECT COUNT(*) FROM trip_users WHERE user_email='$userEmail' AND trip_id='{$this->tripId}'");
+
+			// If user is not already associated with trip, add user to trip
+			if($isTripUser == 0)
+			{
+				$result = $db->exec("INSERT INTO trip_users VALUES('{$userEmail}','{$this->tripId}','{$accepted}')");
+			}
+
+			// If user is already associated with trip, update request_accepted flag
+			else
+			{
+				$result = $db->exec("UPDATE trip_users SET request_accepted=$accepted WHERE user_email='$userEmail' AND trip_id='{$this->tripId}'");
+			}
+
+			// Check for DB errors
 			if(!$result)
 			{
-				$this->error =  "Error: Failed to add user $userEmail to trip";
+				$this->error = "Error: Failed to add user $userEmail to trip";
+			}
+			else
+			{
+				// Send notification if request was accepted
+				if($requestAccepted)
+				{
+					$message = "You have been accepted into a trip!";
+					$notification = new Notification($userEmail, $message);
+				}
 			}
 		}
 		else
@@ -114,27 +147,24 @@ class Trip
 		}
 	}
 	
-	//use this to count how many people are in a trip already
-	//so that we may limit the users that are in the trip
 	public function getHeadCount()
 	{
 		global $db;
 		
 		if($this->tripId != NULL)
 		{
-			//SELECT COUNT(*) as count FROM vehicles WHERE make="Honda";
-			//do we also want to include: 'and request_accepted = 1'?
-			$result = $db->exec("SELECT COUNT(*) as count from trip_users WHERE trip_id='{$this->tripId}'");
-			if(!$result)
-			{
-				$this->error =  "Error: Invalid tripId: {$this->tripId}";
-			}
-			else {
+			$result = $db->querySingle("SELECT COUNT(*) as count from trip_users WHERE trip_id='{$this->tripId}' and request_accepted=1");
+			if(is_numeric($result))
 				return $result;
-			}
 		}
 		
 		return 0;
+	}
+
+	public function getVehicle()
+	{
+		global $db;
+		return $db->querySingle("SELECT * FROM vehicles WHERE vehicle_id='{$this->vehicleId}'", true);
 	}
 
 	public function cancelTrip()
@@ -175,7 +205,6 @@ class Trip
 	private function sendNotification($message)
 	{
 		global $db;
-		require_once('notification.php');
 
 		$query = "SELECT user_email FROM trip_users WHERE trip_id='{$this->tripId}'";
 
