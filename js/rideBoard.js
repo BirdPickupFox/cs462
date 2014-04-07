@@ -539,7 +539,8 @@ function splitTime(dateObj)
 	}
 	else
 	{
-		hour -= 12;
+		if(hour > 12)
+			hour -= 12;
 		per = "PM";
 	}
 
