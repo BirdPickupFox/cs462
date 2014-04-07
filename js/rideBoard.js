@@ -883,7 +883,7 @@ function openTripMemberEditor(tripId, canEdit)
 				id: "joinTripBtn",
 				click: function()
 				{
-					myAlert("TODO join trip");
+					joinTrip(tripId);
 				},
 			},
 			{
@@ -891,7 +891,7 @@ function openTripMemberEditor(tripId, canEdit)
 				id: "leaveTripBtn",
 				click: function()
 				{
-					myAlert("TODO leave trip");
+					leaveTrip(tripId);
 				},
 			},
 			{
@@ -995,6 +995,52 @@ function deleteTrip(tripId)
 		error: function(response)
 		{
 			myAlert("Error deleting trip: " + response.responseText);
+		},
+	});
+}
+
+/*
+ * Join a trip
+ */
+function joinTrip(tripId)
+{
+	$.ajax({
+		dataType: "json",
+		type: "POST",
+		url: "controller/joinTrip.php",
+		data: {
+			tripId: tripId,
+		},
+		success: function(response)
+		{
+			tripMemberTable.fnDraw();
+		},
+		error: function(response)
+		{
+			myAlert("Error joining trip: " + response.responseText);
+		},
+	});
+}
+
+/*
+ * Leave a trip
+ */
+function leaveTrip(tripId)
+{
+	$.ajax({
+		dataType: "json",
+		type: "POST",
+		url: "controller/leaveTrip.php",
+		data: {
+			tripId: tripId,
+		},
+		success: function(response)
+		{
+			tripMemberTable.fnDraw();
+		},
+		error: function(response)
+		{
+			myAlert("Error leaving trip: " + response.responseText);
 		},
 	});
 }

@@ -149,6 +149,21 @@ class Trip
 			$this->error =  "Error: This trip has not been stored in the database";
 		}
 	}
+
+	public function removeUser($userEmail)
+	{
+		global $db;
+	
+		$result = $db->exec("DELETE FROM trip_users WHERE user_email='$userEmail'");
+		if($result)
+		{
+			$notification = new Notification($this->getDriver(), "Attention: $userEmail has left your trip from {$this->origin} to {$this->destination}");
+		}
+		else
+		{
+			$this->error = "Error removing user $userEmail from trip";
+		}
+	}
 	
 	public function getHeadCount()
 	{
