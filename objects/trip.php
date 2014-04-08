@@ -14,12 +14,15 @@ class Trip
 	public $tripId;
 	public $error;
 
-	private $authToken = "ya29.1.AADtN_UpQPuOz19JlGnQ_HCkliTg4Y63_CEgx2eqITEi2zUpYW44hmk33hCv0K0";
+	private $authToken;
 	private $calendarId = "5hrmsdsdmncm5f0vo3pm37bigo%40group.calendar.google.com";
 	private $apiKey = "AIzaSyByo6j6i9-kvorsgcw-v8BV1qPgyMdz5XU";
 
 	public function __construct()
 	{
+		global $db;
+		
+		$this->authToken = $db->querySingle("SELECT token FROM auth WHERE auth_id=1");
 	}
 
 	public static function getFromId($tripId)
@@ -366,6 +369,6 @@ class Trip
 
 	private function parseHumanTime($stamp)
 	{
-		return date('m-d-Y', $stamp) . " at " . date('g:i', $stamp);
+		return date('m-d-Y', $stamp) . " at " . date('g:i A', $stamp);
 	}
 }

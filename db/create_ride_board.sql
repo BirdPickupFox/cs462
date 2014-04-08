@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS trips;
 DROP TABLE IF EXISTS trip_users;
 DROP TABLE IF EXISTS requests;
 DROP TABLE IF EXISTS notifications;
+DROP TABLE IF EXISTS auth;
 
 CREATE TABLE users
 (
@@ -65,6 +66,12 @@ CREATE TABLE notifications
 	foreign key (user_email) references users(email)
 );
 
+CREATE TABLE auth
+(
+	auth_id integer primary key,
+	token varchar(255)
+);
+
 -- Insert test data
 INSERT INTO users VALUES ('a@a.com', 'a');
 INSERT INTO users VALUES ('b@b.com', 'b');
@@ -97,3 +104,5 @@ INSERT INTO notifications VALUES ('b@b.com', 'Test Notification', 1396645000);
 INSERT INTO notifications VALUES ('fox016@gmail.com', 'Test Notification', 1396645000);
 INSERT INTO notifications VALUES ('rlbird22@gmail.com', 'Test Notification', 1396645000);
 INSERT INTO notifications VALUES ('pickup21@gmail.com', 'Test Notification', 1396645000);
+
+INSERT INTO auth VALUES (1, 'bad_token');

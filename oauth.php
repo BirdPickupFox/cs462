@@ -38,6 +38,13 @@ if(isset($_GET['code']))
 	$authToken = $json['access_token'];
 	echo "Token: $authToken";
 
+	$db = new SQLite3('db/ride_board.db');
+	$result = $db->exec("UPDATE auth SET token='$authToken' WHERE auth_id=1");
+	if(!$result)
+	{
+		echo "<br><br>Error: " . $db->lastErrorMsg();
+	}
+/*
 	$calendarId = "5hrmsdsdmncm5f0vo3pm37bigo%40group.calendar.google.com";
 	$url = "https://www.googleapis.com/calendar/v3/calendars/$calendarId/events/watch";
 
@@ -61,6 +68,7 @@ if(isset($_GET['code']))
 
 	echo "<br><br>";
 	echo $response;
+*/
 }
 
 ?>
