@@ -113,3 +113,9 @@ table#newTripTable, table#tripTable, table#vehicleEditorTable {
 #searchQuery {
 	margin:20px;
 }
+#searchResultsTable tr {
+	cursor:pointer;
+}
+#searchResultsTable tr:hover {
+	background:rgb(200,230,250);
+}

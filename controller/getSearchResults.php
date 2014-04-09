@@ -22,7 +22,7 @@ while ($row = $results->fetchArray())
 	$headCount = $db->querySingle("SELECT COUNT(*) as count from trip_users WHERE trip_id='{$tripId}' and request_accepted=1");
 	
 	$tripData[] = array(
-		$tripId,
+		$tripId . "<span class='tripId' trip='$tripId'></span>",
 		$row['origin_loc'],
 		$row['destination_loc'],
 		date('F d, Y g:i A', $row['departure_date_time']),

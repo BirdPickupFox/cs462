@@ -335,6 +335,7 @@ function showSearchWindow()
 				success: function(response)
 				{
 					fnCallback(response);
+					addSearchClickListeners();
 				},
 				error: function(response)
 				{
@@ -1136,6 +1137,22 @@ function saveTripMembers(tripId)
 		{
 			myAlert("Error saving trip members: " + response.responseText);
 		},
+	});
+}
+
+/*
+ * Add click listeners to each cell in the search results table
+ */
+function addSearchClickListeners()
+{
+	var selector = "#searchResultsTable tbody tr";
+	$(selector).unbind("click");
+	$(selector).click(function()
+	{
+		var tripId = ($("span.tripId", this).attr("trip"));
+		if(typeof tripId == "undefined")
+			return;
+		initTripEditor(tripId);	
 	});
 }
 
