@@ -2,7 +2,6 @@
 
 $db = new SQLite3('../db/ride_board.db');
 require_once('../objects/trip.php');
-require_once('/opt/webroot/util/byuUtil.php');
 
 // Pull changes from Google Calendar
 $tripIds = $db->query("SELECT trip_id FROM trips WHERE google_calendar_id<>''");
