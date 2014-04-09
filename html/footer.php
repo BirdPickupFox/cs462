@@ -73,8 +73,10 @@
 
 <!-- Search Page -->
 <div id='searchPage' style='display:none'>
-	<input name='searchBox' id='searchBox'>
-	<button id='searchTripBtn' onclick='populateSearchTable()'>Search</button>
+	<div id='searchQuery'>
+		<input name='searchBox' id='searchBox'>
+		<button id='searchTripBtn' onclick='searchTable.fnDraw()'>Search</button>
+	</div>
 	<table id='searchResultsTable'>
 		<thead>
 			<tr>
@@ -83,7 +85,7 @@
 				<th>Destination</th>
 				<th>Departure</th>
 				<th>Arrival</th>
-				<th>Seat Count</th>
+				<th>Seats Filled</th>
 			</tr>
 		</thead>
 		<tbody>

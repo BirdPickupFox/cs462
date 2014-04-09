@@ -9,7 +9,8 @@ var currentRoute = null; 	// Google Maps most recently returned route object
 
 var vehicleTable = null; 	// Datatable table for vehicles
 var notificationTable = null;	// Datatable table for notifications
-var tripMemberTable = null;	// Datatable table for tirp members
+var tripMemberTable = null;	// Datatable table for trip members
+var searchTable = null;		// Datatable table for searching trips
 // End Globals
 
 /*
@@ -300,12 +301,12 @@ function showSearchWindow()
 	
 	searchTable = $("#searchResultsTable").dataTable({
 		"aoColumnDefs": [
-			{"bSortable": false, "sWidth": "5%", "aTargets":[0]}, // Trip ID
-			{"bSortable": false, "sWidth": "15%", "aTargets":[1]}, // Origin
-			{"bSortable": false, "sWidth": "15%", "aTargets":[2]}, // Destination
-			{"bSortable": false, "sWidth": "10%", "aTargets":[3]}, // Departure
-			{"bSortable": false, "sWidth": "15%", "aTargets":[4]}, // Arrival
-			{"bSortable": false, "sWidth": "40%", "aTargets":[5]}, // Seat Count
+			{"bSortable": false, "sWidth": "7%", "aTargets":[0]}, // Trip ID
+			{"bSortable": false, "sWidth": "20%", "aTargets":[1]}, // Origin
+			{"bSortable": false, "sWidth": "20%", "aTargets":[2]}, // Destination
+			{"bSortable": false, "sWidth": "20%", "aTargets":[3]}, // Departure
+			{"bSortable": false, "sWidth": "20%", "aTargets":[4]}, // Arrival
+			{"bSortable": false, "sWidth": "13%", "aTargets":[5]}, // Seat Count
 		],
 		"bAutoWidth": false,
 		"bLengthChange": false,
@@ -313,13 +314,35 @@ function showSearchWindow()
 		"bProcessing": false,
 		"bServerSide": true,
 		"oLanguage": {
-			"sEmptyTable": "Search for a trip",
+			"sEmptyTable": "No trips found",
 		},
 		"sAjaxSource": "controller/getSearchResults.php",
 		"sDom": "<t>",
+		"fnServerData": function(sSource, aoData, fnCallback, oSettings)
+		{
+			var searchData = new Object();
+			searchData.name = 'query';
+			searchData.value = $("searchBox").val();
+
+			var extraDataArray = [searchData];
+			var dataArray = aoData.concat(extraDataArray);
+
+			oSettings.jqXHR = $.ajax({
+				dataType: "json",
+				type: "POST",
+				url: sSource,
+				data: dataArray,
+				success: function(response)
+				{
+					fnCallback(response);
+				},
+				error: function(response)
+				{
+					myAlert("Error loading trip search table: " + response.responseText);
+				},
+			});
+		},
 	});
-	
-	populateSearchTable();
 }
 
 /*
@@ -426,12 +449,6 @@ function initVehicleTable()
 			});
 		},
 	});
-}
-
-function populateSearchTable()
-{
-	searchText = document.getElementById("searchBox").value;
-	alert(searchText);
 }
 
 /*

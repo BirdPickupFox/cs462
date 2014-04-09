@@ -95,7 +95,7 @@ table#newTripTable, table#tripTable, table#vehicleEditorTable {
 	margin:0px 20px;
 	max-width:1000px;
 }
-#vehicleTable thead th, #notificationTable thead th, #tripMemberTable thead th {
+#vehicleTable thead th, #notificationTable thead th, #tripMemberTable thead th, #searchResultsTable thead th {
 	padding:5px 0px 5px 10px;
 	font-weight:normal;
 	font-style:italic;
@@ -103,10 +103,13 @@ table#newTripTable, table#tripTable, table#vehicleEditorTable {
 	text-align:left;
 	background:#EEE;
 }
-#notificationTable {
+#notificationTable, #searchResultsTable {
 	margin:20px;
 	max-width:1000px;
 }
 #tableFoot {
 	margin:0px 20px;
+}
+#searchQuery {
+	margin:20px;
 }
