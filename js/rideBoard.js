@@ -322,7 +322,7 @@ function showSearchWindow()
 		{
 			var searchData = new Object();
 			searchData.name = 'query';
-			searchData.value = $("searchBox").val();
+			searchData.value = $("#searchBox").val();
 
 			var extraDataArray = [searchData];
 			var dataArray = aoData.concat(extraDataArray);
