@@ -71,6 +71,26 @@
 	</table>
 </div>
 
+<!-- Search Page -->
+<div id='searchPage' style='display:none'>
+	<input name='searchBox' id='searchBox'>
+	<button id='searchTripBtn' onclick='populateSearchTable()'>Search</button>
+	<table id='searchResultsTable'>
+		<thead>
+			<tr>
+				<th>Trip ID</th>
+				<th>Origin</th>
+				<th>Destination</th>
+				<th>Departure</th>
+				<th>Arrival</th>
+				<th>Seat Count</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+</div>
+
 <!-- Registration Editor -->
 <div id='registrationEditor' style='display:none'>
 	<table>

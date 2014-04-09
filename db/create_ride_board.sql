@@ -88,6 +88,8 @@ INSERT INTO vehicles (year, make, model, seat_count, description, owner)
 INSERT INTO vehicles (year, make, model, seat_count, description, owner)
 	VALUES (2005, 'Honda', 'Civic', 5, 'Hybrid, 50 mpg', 'rlbird22@gmail.com');
 INSERT INTO vehicles (year, make, model, seat_count, description, owner)
+	VALUES (2565, 'Honda', 'Accord', 10000, 'Its a big car. In fact, its a spaceship', 'rlbird22@gmail.com');
+INSERT INTO vehicles (year, make, model, seat_count, description, owner)
 	VALUES (2005, 'Honda', 'Civic', 5, 'Hybrid, 50 mpg', 'pickup21@gmail.com');
 
 INSERT INTO trips (origin_loc, destination_loc, departure_date_time, arrival_date_time, vehicle_id, total_cost)

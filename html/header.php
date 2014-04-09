@@ -52,6 +52,9 @@
 				<tr>
 					<td class='navLink' id='notifyNav' onclick='showMyNotifications()'>My Notifications</td>
 				</tr>
+				<tr>
+					<td class='navLink' id='searchNav' onclick='showSearchWindow()'>Search</td>
+				</tr>
 			</table>
 		</td>
 		<td id='viewWrapper'>

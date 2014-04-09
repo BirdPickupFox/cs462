@@ -291,6 +291,38 @@ function showMyNotifications()
 }
 
 /*
+ * Navigates to the Search page
+ */
+function showSearchWindow()
+{
+	selectNavigation("searchNav");
+	$("#dynamicContent").html($("#searchPage").html());
+	
+	searchTable = $("#searchResultsTable").dataTable({
+		"aoColumnDefs": [
+			{"bSortable": false, "sWidth": "5%", "aTargets":[0]}, // Trip ID
+			{"bSortable": false, "sWidth": "15%", "aTargets":[1]}, // Origin
+			{"bSortable": false, "sWidth": "15%", "aTargets":[2]}, // Destination
+			{"bSortable": false, "sWidth": "10%", "aTargets":[3]}, // Departure
+			{"bSortable": false, "sWidth": "15%", "aTargets":[4]}, // Arrival
+			{"bSortable": false, "sWidth": "40%", "aTargets":[5]}, // Seat Count
+		],
+		"bAutoWidth": false,
+		"bLengthChange": false,
+		"bPaginate": false,
+		"bProcessing": false,
+		"bServerSide": true,
+		"oLanguage": {
+			"sEmptyTable": "Search for a trip",
+		},
+		"sAjaxSource": "controller/getSearchResults.php",
+		"sDom": "<t>",
+	});
+	
+	populateSearchTable();
+}
+
+/*
  * Deselects all navigation links, then selects the link
  * with the given id
  *
@@ -394,6 +426,12 @@ function initVehicleTable()
 			});
 		},
 	});
+}
+
+function populateSearchTable()
+{
+	searchText = document.getElementById("searchBox").value;
+	alert(searchText);
 }
 
 /*
