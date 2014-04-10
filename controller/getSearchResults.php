@@ -10,8 +10,8 @@ if(isset($_COOKIE['currentUser']))
 	$currentUser = $_COOKIE['currentUser'];
 }
 
-$results = $db->query("SELECT * FROM trips");
 $query = $_POST['query']; // TODO use this
+$results = $db->query("SELECT * FROM trips WHERE origin_loc LIKE '%{$query}%' or destination_loc LIKE '%{$query}%'");
 
 $tripData = array();
 while ($row = $results->fetchArray())
